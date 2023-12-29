@@ -1,0 +1,27 @@
+/* ProjectsByBranch.css */
+
+.project-container {
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 66px;
+  }
+  
+  .project-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .project-description {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  /* If you want to add some spacing between projects */
+  .project-container + .project-container {
+    margin-top: 20px;
+  }
+  

@@ -1,0 +1,58 @@
+.student-sign-up-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .student-sign-up-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .student-sign-up-form input {
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .button-container button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    margin:10px;
+    
+  }
+  
+  .button-container button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+  }
+  
+  .button-container button:last-child {
+    background-color: #2196f3;
+  }
+  .avatar-label{
+    position: relative;
+  }
+  /* StudentSignUp.css */
+
+.add-picture-text {
+    margin-top: 8px;
+    font-size: 14px;
+  }
+  
+  /* ... (existing styles) */
+  

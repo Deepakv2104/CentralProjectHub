@@ -1,0 +1,75 @@
+/* ProfileCard.css */
+
+.profile-card {
+    --bg-color: #f2f2f2;
+    --dark-grey: #1e1717;
+    --primary: #2196f3;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: var(--bg-color);
+    margin: 8px; /* Reduced margin */
+    padding: 10px; /* Reduced padding */
+    transition: transform 0.3s ease; /* Added transition for zoom effect */
+    width: 180px; /* Adjusted width */
+    height: 250px; /* Set a fixed height */
+    overflow: hidden; /* Hide overflowing content */
+}
+
+.profile-card:hover {
+    transform: scale(1.05); /* Zoom effect on hover */
+}
+
+.avatar {
+    width: 120px; /* Reduced width */
+    height: 120px; /* Reduced height */
+    border-radius: 50%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-body {
+    text-align: center;
+}
+
+h4 {
+    font-family: sans-serif;
+    font-size: 1rem; /* Reduced font size */
+    font-weight: bold;
+    margin-bottom: 3px; /* Reduced margin-bottom */
+    color: black;
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflowing text */
+    text-overflow: ellipsis; /* Display an ellipsis (...) for overflow */
+}
+
+hr {
+    border-top: 1px solid var(--dark-grey);
+    
+    width: 70%; /* Reduced width */
+    margin: 3px auto; /* Reduced margin */
+}
+
+p {
+    font-family: sans-serif;
+    font-size: 0.9rem; /* Reduced font size */
+    line-height: 1.3;
+    color: var(--dark-grey);
+    margin-top: 6px; /* Reduced margin-top */
+    overflow: hidden; /* Hide overflowing content */
+    text-overflow: ellipsis; /* Display an ellipsis (...) for overflow */
+}
+
+.fas {
+    color: var(--primary);
+    font-size: 1rem; /* Reduced font size */
+}
+
+.pe-2 {
+    padding-right: 2px; /* Reduced padding-right */
+}

@@ -1,0 +1,54 @@
+/* Add this to your global styles or a specific container element */
+body {
+  overflow-x: hidden;
+}
+
+/* Card.css */
+
+.actual-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1295px;
+  /* Adjusted height to auto for dynamic content */
+  margin-top: 63px;
+}
+
+.c1 {
+  width: 90%;
+  max-width: 1210px;
+  max-height: 400px; /* Adjusted max-height for the cards */
+  margin: 10px auto; /* Centered content horizontally */
+  background-color: white;
+  color: black;
+  padding: 20px; /* Added padding */
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 5px 10px 20px #000000; /* Added subtle box shadow */
+}
+
+/* Media Query for tablets and smaller screens */
+@media (max-width: 768px) {
+  .c1 {
+    width: 95%; /* Adjusted width for smaller screens */
+    max-height: none; /* Reset max-height for smaller screens */
+  }
+}
+
+/* Media Query for mobile phones */
+@media (max-width: 576px) {
+  .c1 {
+    width: 100%; /* Adjusted width for smaller screens */
+    padding: 15px; /* Adjusted padding for smaller screens */
+    max-height: none; /* Reset max-height for smaller screens */
+  }
+}
+
+/* Media Query for larger mobile screens like iPhone Max Pro */
+@media (min-width: 414px) and (max-width: 896px) {
+  .c1 {
+    width: 90%; /* Adjusted width for larger mobile screens */
+    padding: 20px; /* Adjusted padding for larger mobile screens */
+    max-height: 350px; /* Adjusted max-height for larger mobile screens */
+  }
+}

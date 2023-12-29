@@ -1,0 +1,20 @@
+/* Sidebar.css */
+.custom-sidebar {
+    width: 225px;
+    margin-top: 66px;
+    background-color: hsl(38, 27%, 92%);
+    padding: 16px;
+    justify-content: center;
+   
+  }
+  
+  .avatar-container {
+  
+    margin: 8px 40px;
+  }
+  
+  .username {
+    font-size: 20px;
+    margin: 8px 10px;
+  }
+  

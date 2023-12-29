@@ -1,0 +1,37 @@
+/* ComputerScience.css */
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(25% - 48px), 1fr)); /* Adjust the size of the card by changing this value */
+  gap: 60px; /* Adjust the gap as needed */
+  justify-content: space-around;
+}
+
+.dataCard {
+  border: 1px solid #ddd;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.dataCard:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.dataCard-image {
+  max-width: 100%;
+  height: auto;
+}
+
+.dataCard-content {
+  margin-top: 8px;
+}
+
+.dataCard-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.dataCard-description {
+  color: #555;
+}

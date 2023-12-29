@@ -1,0 +1,47 @@
+/* ProfileCarousel.css */
+
+.profile-carousel-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  margin: auto;
+  padding: 20px 0;
+  background-color: #B6BBC4;
+  cursor: pointer;
+}
+
+.card-carousel {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px; /* Adjust the gap between cards as needed */
+  overflow-x: auto;
+  scroll-snap-type: x mandatory; /* Enable horizontal scrolling with snap points */
+}
+
+.card1 {
+  flex: 0 0 auto; /* Allow cards to shrink and grow as needed */
+  scroll-snap-align: start; /* Snap cards to the start of the scroll container */
+}
+
+.nav-button {
+  cursor: pointer;
+  font-size: 20px;
+  margin: 0 10px; /* Adjust the margin as needed */
+}
+
+/* Media query for mobile screens */
+@media (max-width: 576px) {
+  .profile-carousel-container {
+    padding: 10px 0; /* Adjusted padding for mobile screens */
+  }
+
+  .card-carousel {
+    gap: 5px; /* Adjust the gap between cards for mobile screens */
+    padding: 10px; /* Added padding for better mobile appearance */
+  }
+
+  .nav-button {
+    font-size: 16px; /* Adjusted font size for mobile screens */
+    margin: 0 5px; /* Adjusted margin for mobile screens */
+  }
+}

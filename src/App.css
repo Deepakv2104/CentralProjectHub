@@ -1,20 +1,7 @@
-.App {
-  text-align: center;
-}
+/* App.css */
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+.app-container {
+  /* background: url('../src/Images/ii2.jpg') center/cover; */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -22,17 +9,20 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+ 
 }
 
-.App-link {
-  color: #61dafb;
-}
+/* Responsive Styles */
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+@media (max-width: 768px) {
+  .app-container {
+    background-size: cover; /* Adjust background-size for smaller screens */
+    font-size: calc(8px + 2vmin); /* Adjust font size for smaller screens */
   }
-  to {
-    transform: rotate(360deg);
+}
+
+@media (min-width: 1710px) {
+  .app-container {
+    background-size: 100% auto; /* Adjust background-size for wider screens */
   }
 }
