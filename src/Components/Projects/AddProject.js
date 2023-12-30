@@ -152,9 +152,10 @@ const ProjectSubmission = () => {
         const branch = userData.branch;
         const section = userData.section;
         const rollNo = userData.rollNo;
+        const year = userData.year;
 
         // Dynamic path based on user data
-        const storagePath = `anurag-university/students/branches/${branch}/${section}/${rollNo}/${projectData.projectName}/`;
+        const storagePath = `anurag-university/students/year/${year}/${branch}/${section}/${rollNo}/${projectData.projectName}/`;
 
         // Create storage reference for documentation files
         const storageRef = ref(getStorage(), storagePath + file.name);

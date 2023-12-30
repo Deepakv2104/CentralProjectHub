@@ -51,6 +51,7 @@ const ProfileAvatar = ({ userId: propUserId }) => {
     branch: '',
     section: '',
     rollNo: '',
+    year: '',
   });
 
   const [uploading, setUploading] = useState(false);
@@ -69,6 +70,7 @@ const ProfileAvatar = ({ userId: propUserId }) => {
               branch: data.branch || '',
               section: data.section || '',
               rollNo: data.rollNo || '',
+              year: data.year || '',
             });
           } else {
             console.log('No such document!');
@@ -97,15 +99,15 @@ const ProfileAvatar = ({ userId: propUserId }) => {
 
     if (file) {
       try {
-        const { branch, section, rollNo } = profileData;
+        const { branch, section, rollNo, year } = profileData;
         const Branch = branch;
-        const Section = section.toLowerCase();
-
+        const Section = section;
+        const Year = year;
         setUploading(true); // Set uploading state to true
 
         const storageRef = ref(
           getStorage(),
-          `anurag-university/students/branches/${Branch}/${Section}/${rollNo}/profilePic/`
+          `anurag-university/students/year/${Year}/${Branch}/${Section}/${rollNo}/profilePic/`
         );
         const snapshot = await uploadBytes(storageRef, file);
         const downloadURL = await getDownloadURL(snapshot.ref);

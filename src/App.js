@@ -23,6 +23,7 @@ import ProjectTable from "./Components/Projects/ProjectsByBranch.js";
 import LoginCard from "./Components/Authentication/Login.js";
 import ProportionedGridComponent from "./Components/Profile.js";
 import Profile from "./Components/Profile.js";
+import ViewProjects from "./Components/Projects/ViewProjects.js";
 const theme = createTheme();
 
 const App = () => {
@@ -36,6 +37,7 @@ const App = () => {
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<LoginCard />} />
             <Route path="/student-dashboard" element={<Dashboard />}>
+            <Route path="/student-dashboard/profile" element={<Profile />}/>
               <Route path="/student-dashboard/explore" element={<Explore />} />
               <Route path="/student-dashboard/explore/:branchName" element={<ProjectTable />} />
               <Route path="/student-dashboard/explore/:branchName/:projectId" element={<SingleProjectCard />} />
@@ -45,8 +47,13 @@ const App = () => {
               <Route path="/student-dashboard/add-project/:projectId" element={<SingleProjectCard/>} />
               <Route path="/student-dashboard/add-project/:projectId/:studentId" element={<Profile/>} />
               {/* <Route path="/student-dashboard/add-project/:projectId/:profileId" element={<ProportionedGridComponent/>} /> */}
-              <Route path="/student-dashboard/profile" element={<NewCard/>} />
+             
               <Route path="/student-dashboard/explore/:branchName/:projectId/:studentId" element={<Profile/>} />
+              <Route path="/student-dashboard/profile/:studentId/" element={<Profile/>} />
+
+              <Route path="/student-dashboard/profile/:studentId/projects" element={<ViewProjects/>} />
+              <Route path="/student-dashboard/profile/:studentId/projects/:projectId" element={<SingleProjectCard/>} />
+              <Route path="/student-dashboard/profile/:studentId/projects/:projectId" element={<SingleProjectCard/>} />
               <Route path="/student-dashboard/blog" element={<About />} />
               <Route path="/student-dashboard/research-paper" element={<About />} />
               <Route path="/student-dashboard/settings" element={<About />} />
@@ -54,7 +61,7 @@ const App = () => {
 
             {/* Add the LoginPage route */}
             {/* <Route path="/login" element={<LoginPage />} /> */}
-
+          
             <Route path="/services" element={<Services />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/about" element={<About />} />

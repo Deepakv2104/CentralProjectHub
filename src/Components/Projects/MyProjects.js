@@ -59,12 +59,9 @@ const MyProjects = () => {
     console.log("Clicked on project with projectId:", projectId);
   };
 
- 
-
-
   return (
     <div className="actual-card">
-       <div className="back-and-project-container">
+      <div className="back-and-project-container">
         <div className="back-icon-container">
           <IconButton
             aria-label="back"
@@ -99,9 +96,7 @@ const MyProjects = () => {
             </StyledIconButton>
           </div>
 
-          <div className="project-discription">
-            {project.description}
-          </div>
+          <div className="project-discription">{project.description}</div>
 
           <div className="skills">
             <ul>
@@ -114,9 +109,18 @@ const MyProjects = () => {
               )}
             </ul>
           </div>
+
+          {/* Add a horizontal line after each project card */}
+         
         </div>
-      ))}
+      )
+      
+      )
+      
+      }
+       <hr style={{ border: "1px solid #333" }} />
     </div>
+    
   );
 };
 

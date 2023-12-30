@@ -1,6 +1,16 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import { Download } from '@mui/icons-material';
+import { IconButton } from '@material-ui/core';
+import { styled } from "@mui/system";
+
+
+const StyledIconButton = styled(IconButton)(({ theme }) => ({
+  "&:hover": {
+    color: theme.palette.primary.main,
+  },
+}));
 
 const DownloadDocument = ({ projectData }) => {
   const handleDownload = () => {
@@ -16,14 +26,17 @@ const DownloadDocument = ({ projectData }) => {
 
   return (
     <div>
-      <Button
-        variant="contained"
-        color="primary"
-        startIcon={<CloudDownloadIcon />}
-        onClick={handleDownload}
-      >
-        Download Document
-      </Button>
+      <StyledIconButton 
+        
+       
+        onClick={handleDownload}>
+ 
+
+   
+      <Download/>
+
+      </StyledIconButton>
+     
     </div>
   );
 };

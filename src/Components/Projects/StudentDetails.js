@@ -95,7 +95,7 @@ const StudentDetails = ({ studentId }) => {
           style={{ justifyContent: "center", paddingLeft: 50, paddingTop: 30 }}
         >
           Project Count:
-          <ProjectCount />
+          <ProjectCount userId={studentId} />
         </div>
       </div>
       <div>

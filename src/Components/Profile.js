@@ -27,7 +27,7 @@ import { useAuth } from "./Authentication/auth-context";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { auth, firestore } from "../firebase/firebase";
 import EditProfile from "./EditProfile";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IconButton } from "@material-ui/core";
 const Profile = () => {
   const { studentId } = useParams();
@@ -36,7 +36,7 @@ const Profile = () => {
   const [userData, setUserData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const userId = user.uid;
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchStudentDetails = async () => {
       try {
@@ -49,14 +49,14 @@ const Profile = () => {
             console.log("User document not found");
           }
         });
-  
+
         // Clean up the subscription when the component unmounts
         return () => unsubscribe();
       } catch (error) {
         console.error("Error fetching student details:", error);
       }
     };
-  
+
     // Fetch student details based on the provided studentId
     if (studentId) {
       fetchStudentDetails(studentId);
@@ -88,7 +88,9 @@ const Profile = () => {
   const handleEditDone = () => {
     setIsEditing(false);
   };
-
+  const handleClickProjectCount = () => {
+    navigate(`/student-dashboard/profile/${studentId}/projects`);
+  };
   return (
     <div style={{ paddingTop: "60px", overflow: "hidden", margin: "0 " }}>
       {/* Conditionally render EditProfile component */}
@@ -262,7 +264,7 @@ const Profile = () => {
                               </TableCell>
                               <TableCell>
                                 <Typography variant="body1">
-                                  {intToRoman(userData.year)}
+                                  {userData.year}
                                 </Typography>
                               </TableCell>
                             </TableRow>
@@ -355,13 +357,22 @@ const Profile = () => {
               </Paper>
             </Grid>
             <Grid item xs={12} md={6}>
-  <Paper style={{ height: "100%", display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-    {/* Content for the right bottom right grid */}
-    <h2>Project Count</h2>
-    <ProjectCount userId={studentId} />
-  </Paper>
-</Grid>
-
+              <Paper
+                style={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  cursor:'pointer'
+                }}
+                onClick={handleClickProjectCount}
+              >
+                {/* Content for the right bottom right grid */}
+                <h2>Project Count</h2>
+                <ProjectCount userId={studentId} />
+              </Paper>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>

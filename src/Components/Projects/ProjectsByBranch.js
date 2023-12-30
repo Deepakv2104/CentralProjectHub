@@ -18,6 +18,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { TableSortLabel } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkIcon from "@mui/icons-material/Link";
+import intToRoman from "../RomanNo";
 
 const useStyles = makeStyles({
   tableContainer: {
@@ -57,7 +58,6 @@ const useStyles = makeStyles({
     marginRight: "10px",
   },
 });
-
 const ProjectTable = () => {
   const classes = useStyles();
   const navigate = useNavigate();
@@ -65,7 +65,7 @@ const ProjectTable = () => {
   const [projects, setProjects] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [filterText, setFilterText] = useState("");
-  const [students, setStudents] = useState({});
+
   const fetchProjects = async () => {
     try {
       const db = getFirestore();
@@ -73,59 +73,61 @@ const ProjectTable = () => {
       const q = query(projectsCollectionRef, where("branch", "==", branchName.toLowerCase()));
       const querySnapshot = await getDocs(q);
   
-      const data = querySnapshot.docs.map(async (doc) => {
-
+      const data = [];
+  
+      for (const doc of querySnapshot.docs) {
         const projectData = {
-
           id: doc.id,
           ...doc.data(),
         };
-        console.log(projectData);
+  
         // Check if studentId is available before fetching rollNo
         if (projectData.userId) {
-          projectData.rollNo = await fetchRollNo(projectData.userId);
+          const studentDetails = await fetchStudentDetails(projectData.userId);
+  
+          // Set rollNo and year in project data
+          projectData.rollNo = studentDetails.rollNo;
+          projectData.year = intToRoman(studentDetails.year);
         } else {
           console.log("No student id provided for project:", projectData.id);
           projectData.rollNo = "N/A";
+          projectData.year = "N/A";
         }
   
-        return projectData;
-      });
+        data.push(projectData);
+      }
   
-      const projectsWithData = await Promise.all(data);
-      setProjects(projectsWithData);
+      setProjects(data);
     } catch (error) {
       console.error("Error fetching projects:", error);
     } finally {
       // Add any cleanup or additional logic here
     }
   };
-  
-  const fetchRollNo = async (studentId) => {
+  const fetchStudentDetails = async (studentId) => {
     try {
       if (!studentId) {
         console.log("No studentId provided");
-        return "N/A";
+        return { rollNo: "N/A", year: "N/A" };
       }
-  
+
       const db = getFirestore();
       const studentDocRef = doc(db, "students", studentId);
-  
       const studentDocSnapshot = await getDoc(studentDocRef);
-  
+
       if (studentDocSnapshot.exists()) {
-        console.log("Roll number found:", studentDocSnapshot.data().rollNo);
-        return studentDocSnapshot.data().rollNo;
+        const studentData = studentDocSnapshot.data();
+        return { rollNo: studentData.rollNo, year: studentData.year };
       } else {
         console.log("Student document not found");
-        return "N/A";
+        return { rollNo: "N/A", year: "N/A" };
       }
     } catch (error) {
-      console.error("Error fetching roll number:", error);
-      return "N/A";
+      console.error("Error fetching student details:", error);
+      return { rollNo: "N/A", year: "N/A" };
     }
   };
-  
+
   useEffect(() => {
     fetchProjects();
   }, [branchName]);
@@ -164,9 +166,8 @@ const ProjectTable = () => {
     { key: "github", label: "GitHub" },
     { key: "appLink", label: "App Link" },
     { key: "rollNo", label: "Roll No." },
+    {key:"year", label: "Year"},
     { key: "submittedOn", label: "Date" },
-
-
   ];
 
   return (
@@ -208,40 +209,39 @@ const ProjectTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-  {filteredProjects.map((project) => (
-    <TableRow
-      key={project.id}
-      className={classes.tableRow}
-      onClick={() => handleCellClick(project.id)}
-    >
-      {columns.map((column) => (
-        <TableCell key={column.key}>
-          {column.key === "github" && project[column.key] ? (
-            <IconButton
-              href={project[column.key]}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <GitHubIcon />
-            </IconButton>
-          ) : column.key === "appLink" && project[column.key] ? (
-            <IconButton
-              href={project[column.key]}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <LinkIcon />
-            </IconButton>
-          ) : (
-            // Check if the column key is "rollNo" and display it
-            column.key === "rollNo" ? project[column.key] : project[column.key]
-          )}
-        </TableCell>
-      ))}
-    </TableRow>
-  ))}
-</TableBody>
-
+            {filteredProjects.map((project) => (
+              <TableRow
+                key={project.id}
+                className={classes.tableRow}
+                onClick={() => handleCellClick(project.id)}
+              >
+                {columns.map((column) => (
+                  <TableCell key={column.key}>
+                    {column.key === "github" && project[column.key] ? (
+                      <IconButton
+                        href={project[column.key]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <GitHubIcon />
+                      </IconButton>
+                    ) : column.key === "appLink" && project[column.key] ? (
+                      <IconButton
+                        href={project[column.key]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <LinkIcon />
+                      </IconButton>
+                    ) : (
+                      // Check if the column key is "rollNo" or "year" and display it
+                      (column.key === "rollNo" || column.key === "year") ? project[column.key] : project[column.key]
+                    )}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
         </Table>
       </TableContainer>
     </div>

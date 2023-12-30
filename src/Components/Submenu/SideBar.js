@@ -127,7 +127,7 @@ const Sidebar = ({ showSidebar }) => {
         </ListItem>
         <ListItem>
           <Button
-            onClick={() => navigate("/student-dashboard/profile")}
+            onClick={() => navigate(`/student-dashboard/profile/${userId}`)}
             style={{ display: "flex", alignItems: "center", color: "inherit" }}
           >
             <ListItemIcon>
