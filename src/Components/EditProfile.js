@@ -24,9 +24,11 @@ import {
 } from "firebase/firestore";
 import { useAuth } from "../Components/Authentication/auth-context";
 import { firestore } from "../../src/firebase/firebase";
-
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 const EditProfile = ({ onEditDone }) => {
   const [open, setOpen] = useState(true);
+  const [readOnlyInteraction, setReadOnlyInteraction] = useState(false);
   const [userData, setUserData] = useState({
     branch: "",
     city: "",
@@ -75,7 +77,9 @@ const EditProfile = ({ onEditDone }) => {
       [field]: value,
     }));
   };
-
+  const handleReadOnlyInteraction = () => {
+    setReadOnlyInteraction(true);
+  };
   const updateProjectsCollection = async (updatedBranch) => {
     try {
       const projectsCollectionRef = collection(firestore, "projects");
@@ -105,15 +109,17 @@ const EditProfile = ({ onEditDone }) => {
     try {
       const userDocRef = doc(firestore, "students", userId);
       await updateDoc(userDocRef, userData);
-
+  
       // Update the 'projects' collection
       if (userData.branch) {
         await updateProjectsCollection(userData.branch);
       }
-      console.log("User data updated successfully!");
+  
+      toast.success("User data updated successfully!");
       handleClose();
     } catch (error) {
       console.error("Error updating user data:", error);
+      toast.error("Error updating user data. Please try again.");
       handleClose();
     }
   };
@@ -143,32 +149,78 @@ const EditProfile = ({ onEditDone }) => {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                label="Branch"
-                variant="outlined"
-                fullWidth
-                value={userData.branch}
-                onChange={(e) => handleChange("branch", e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Year"
-                variant="outlined"
-                fullWidth
-                value={userData.year}
-                onChange={(e) => handleChange("year", e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Section"
-                variant="outlined"
-                fullWidth
-                value={userData.section}
-                onChange={(e) => handleChange("section", e.target.value)}
-              />
-            </Grid>
+        <TextField
+          label="Branch"
+          variant="outlined"
+          fullWidth
+          value={userData.branch}
+          onChange={(e) => handleChange("branch", e.target.value)}
+          InputProps={{
+            readOnly: true,
+            onFocus: handleReadOnlyInteraction,
+            onClick: handleReadOnlyInteraction,
+          }}
+        />
+        <Typography
+          variant="body2"
+          color={readOnlyInteraction ? "error" : "textSecondary"}
+          style={{ marginTop: "5px" }}
+        >
+          {readOnlyInteraction
+            ? "Changes not allowed. Please contact the admin."
+            : "To change this field, please contact the admin."}
+        </Typography>
+      </Grid>
+<Grid item xs={12}>
+  <TextField
+    label="Year"
+    variant="outlined"
+    fullWidth
+    value={userData.year}
+    onChange={(e) => handleChange("year", e.target.value)}
+    InputProps={{
+      readOnly: true,
+      onFocus: handleReadOnlyInteraction,
+      onClick: handleReadOnlyInteraction,
+ 
+    }}
+  />
+  <Typography
+          variant="body2"
+          color={readOnlyInteraction ? "error" : "textSecondary"}
+          style={{ marginTop: "5px" }}
+        >
+          {readOnlyInteraction
+            ? "Changes not allowed. Please contact the admin."
+            : "To change this field, please contact the admin."}
+        </Typography>
+</Grid>
+<Grid item xs={12}>
+  <TextField
+    label="Section"
+    variant="outlined"
+    fullWidth
+    value={userData.section}
+    onChange={(e) => handleChange("section", e.target.value)}
+    InputProps={{
+      readOnly: true,
+      onFocus: handleReadOnlyInteraction,
+      onClick: handleReadOnlyInteraction,
+ 
+    }}
+  />
+  <Typography
+          variant="body2"
+          color={readOnlyInteraction ? "error" : "textSecondary"}
+          style={{ marginTop: "5px" }}
+        >
+          {readOnlyInteraction
+            ? "Changes not allowed. Please contact the admin."
+            : "To change this field, please contact the admin."}
+        </Typography>
+</Grid>
+
+
             <Grid item xs={12}>
               <Typography variant="h6" gutterBottom>
                 Skills

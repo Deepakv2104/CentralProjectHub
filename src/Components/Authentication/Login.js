@@ -9,6 +9,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import StudentSignUp from './StudentSignUp';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Select, MenuItem, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import AdminSignupForm from './AdminSignUp';
 
 
 const LoginCard = () => {
@@ -56,7 +57,7 @@ const LoginCard = () => {
         case 'student':
           return <StudentSignUp />;
         case 'admin':
-          return null;
+          return <AdminSignupForm/>;
         default:
           return null;
       }

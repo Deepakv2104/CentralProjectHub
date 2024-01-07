@@ -19,7 +19,7 @@ const Carousel = ({ title, data, cardWidth, visibleCards }) => {
 
   const handleCardClick = (item) => {
     // Use useHistory to navigate when a card is clicked
-    navigate(`/student-dashboard/explore/${item.name.toLowerCase()}`);
+    navigate(`/student-dashboard/explore/${item.name}`);
   };
 
   return (

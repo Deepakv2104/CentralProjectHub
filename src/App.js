@@ -24,6 +24,9 @@ import LoginCard from "./Components/Authentication/Login.js";
 import ProportionedGridComponent from "./Components/Profile.js";
 import Profile from "./Components/Profile.js";
 import ViewProjects from "./Components/Projects/ViewProjects.js";
+import ContainerWithCards from "./Components/Guides.js";
+import FacultiesGrid from "./Components/Guides.js";
+import GuideProfile from "./Components/GuideProfile.js";
 const theme = createTheme();
 
 const App = () => {
@@ -55,7 +58,10 @@ const App = () => {
               <Route path="/student-dashboard/profile/:studentId/projects/:projectId" element={<SingleProjectCard/>} />
               <Route path="/student-dashboard/profile/:studentId/projects/:projectId" element={<SingleProjectCard/>} />
               <Route path="/student-dashboard/blog" element={<About />} />
-              <Route path="/student-dashboard/research-paper" element={<About />} />
+              <Route path="/student-dashboard/guide" element={<FacultiesGrid />} />
+              <Route path="/student-dashboard/guide/:FacultyId" element={<GuideProfile/>} />
+             
+             
               <Route path="/student-dashboard/settings" element={<About />} />
             </Route>
 

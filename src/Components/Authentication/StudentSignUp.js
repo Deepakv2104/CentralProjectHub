@@ -6,12 +6,9 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import { doc, setDoc, getDocs, collection } from 'firebase/firestore';
 import { firestore } from '../../firebase/firebase';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { Avatar, Select, InputLabel, MenuItem, Typography } from '@mui/material';
+import {  Select, InputLabel, MenuItem, Typography, Input } from '@mui/material';
 import '../../Styles/StudentSignUp.css';
-import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Container, Grid } from '@mui/material';
 import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,9 +33,6 @@ const useStyles = makeStyles((theme) => ({
 const StudentSignUp = () => {
   const navigate = useNavigate();
   const [sectionIndex, setSectionIndex] = useState(0);
-  const [selectedBranch, setSelectedBranch] = useState('');
-  const [selectedSection, setSelectedSection] = useState('');
-  const [selectedYear, setSelectedYear] = useState('');
   const [branchesData, setBranchesData] = useState({});
   const classes = useStyles();
 
@@ -97,19 +91,6 @@ const StudentSignUp = () => {
     }
   };
 
-  const handleProfilePicUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setFormData((prevData) => ({
-          ...prevData,
-          profilePic: e.target.result,
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   const handleSignUp = async () => {
     try {
@@ -144,7 +125,8 @@ const StudentSignUp = () => {
 
       // Additional logic, e.g., refresh the page
       console.log('User signed up successfully:', user);
-      window.location.reload(); // Refresh the page
+     
+      navigate('/student-dashboard/explore') ;// Refresh the page
     } catch (error) {
       // Show error toast
       toast.error(`Signup failed: ${error.message}`, {
@@ -177,6 +159,7 @@ const StudentSignUp = () => {
                   {field.charAt(0).toUpperCase() + field.slice(1)}
                 </InputLabel>
                 <Select
+                fullWidth
                   value={formData[sectionIndex][field]}
                   onChange={(e) => handleInputChange(sectionIndex, field, e.target.value)}
                   displayEmpty
@@ -200,7 +183,9 @@ const StudentSignUp = () => {
                 </Select>
               </div>
             ) : (
-              <input
+              <Input
+              disableUnderline 
+              fullWidth
                 type={field.toLowerCase().includes('password') ? 'password' : 'text'}
                 placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
                 value={formData[sectionIndex][field]}
@@ -226,14 +211,7 @@ const StudentSignUp = () => {
           </button>
         )}
 
-        {/* Hidden file input for profile picture upload */}
-        <input
-          id="profilePicInput"
-          type="file"
-          accept="image/*"
-          onChange={handleProfilePicUpload}
-          className={classes.hiddenInput}
-        />
+   
       </form>
     </div>
   );

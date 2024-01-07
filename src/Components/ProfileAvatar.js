@@ -60,20 +60,33 @@ const ProfileAvatar = ({ userId: propUserId }) => {
     const fetchProfileData = async () => {
       try {
         if (userId) {
-          const userDocRef = doc(firestore, 'students', userId);
-          const docSnapshot = await getDoc(userDocRef);
-
-          if (docSnapshot.exists()) {
-            const data = docSnapshot.data();
+          const studentDocRef = doc(firestore, 'students', userId);
+          const teacherDocRef = doc(firestore, 'Faculties', userId);
+  
+          const studentDocSnapshot = await getDoc(studentDocRef);
+          const teacherDocSnapshot = await getDoc(teacherDocRef);
+  
+          if (studentDocSnapshot.exists()) {
+            const data = studentDocSnapshot.data();
             setProfileData({
               profilePic: data.profilePic || '',
               branch: data.branch || '',
               section: data.section || '',
               rollNo: data.rollNo || '',
               year: data.year || '',
+              // Include other properties specific to students
+              name: data.name || '',
+            });
+          } else if (teacherDocSnapshot.exists()) {
+            const data = teacherDocSnapshot.data();
+            console.log(data.fullName)
+            setProfileData({
+              profilePic: data.profilePic || '',
+              // Include other properties specific to teachers
+              name: data.fullName || '',
             });
           } else {
-            console.log('No such document!');
+            console.log('No such document in both collections!');
           }
         } else {
           console.log('No current user!');
@@ -82,11 +95,13 @@ const ProfileAvatar = ({ userId: propUserId }) => {
         console.error('Error fetching profile data:', error);
       }
     };
-
+  
     if (!initializing) {
       fetchProfileData();
     }
   }, [userId, initializing]);
+  
+
 
   const handleUploadClick = () => {
     if (userId && user && userId === user.uid) {

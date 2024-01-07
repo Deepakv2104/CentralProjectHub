@@ -25,7 +25,7 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.5 }}
           >
-            <h1>Your Project Repository</h1>
+            <h1>Central Project Hub</h1>
             <p>Explore and manage your projects with ease.</p>
           </motion.div>
         </div>

@@ -1,9 +1,9 @@
-// ProfileCard.js
+
 import React from 'react';
 import '../Styles/ProfileCard.css'
 import { Typography } from '@material-ui/core';
 
-const ProfileCard = ({ name, imageUrl, backgroundColor, quote,rollNo }) => {
+const TopContributorsCard = ({ name, imageUrl, backgroundColor, quote,rollNo }) => {
   return (
     <div className="profile-card" style={{cursor:'pointer'}}>
       <div className="avatar mx-auto bg-white">
@@ -27,4 +27,4 @@ const ProfileCard = ({ name, imageUrl, backgroundColor, quote,rollNo }) => {
   );
 };
 
-export default ProfileCard;
+export default TopContributorsCard;

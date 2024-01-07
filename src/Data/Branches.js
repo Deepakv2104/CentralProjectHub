@@ -1,19 +1,24 @@
 const branches = [
     {
-      name: 'Computer Science',
+      name: 'Computer Science Engineering',
       image: 'https://via.placeholder.com/150/FF5733/FFFFFF?text=CS', // Sample image for Computer Science
     },
     {
       name: 'Artificial Intelligence',
-      image: 'https://via.placeholder.com/150/9b59b6/FFFFFF?text=AI', // Sample image for Aerospace Engineering
+      image: 'https://via.placeholder.com/150/f39c12/FFFFFF?text=AI', // Sample image for Aerospace Engineering
+    },
+    ,
+    {
+      name: 'Information Technology Engineering',
+      image: 'https://via.placeholder.com/150/9b59b6/FFFFFF?text=IT', // Sample image for Aerospace Engineering
     },
     {
-      name: 'Electrical Communication Engineering',
+      name: 'Electronic and Communication Engineering',
       image: 'https://via.placeholder.com/150/3498db/FFFFFF?text=ECE', // Sample image for Electrical Engineering
     },
     {
       name: 'Electrical Engineering',
-      image: 'https://via.placeholder.com/150/3498db/FFFFFF?text=EE', // Sample image for Electrical Engineering
+      image: 'https://via.placeholder.com/150/FF5733/FFFFFF?text=EE', // Sample image for Electrical Engineering
     },
     {
       name: 'Mechanical Engineering',
@@ -28,8 +33,8 @@ const branches = [
       image: 'https://via.placeholder.com/150/f39c12/FFFFFF?text=ChE', // Sample image for Chemical Engineering
     },
     {
-      name: 'AI',
-      image: 'https://via.placeholder.com/150/9b59b6/FFFFFF?text=AI', // Sample image for Aerospace Engineering
+      name: 'Electrical and Electronic Engineering',
+      image: 'https://via.placeholder.com/150/9b59b6/FFFFFF?text=EEE', // Sample image for Aerospace Engineering
     },
     {
       name: 'Biomedical Engineering',

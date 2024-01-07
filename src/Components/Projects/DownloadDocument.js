@@ -25,7 +25,7 @@ const DownloadDocument = ({ projectData }) => {
   };
 
   return (
-    <div>
+   
       <StyledIconButton 
         
        
@@ -37,7 +37,7 @@ const DownloadDocument = ({ projectData }) => {
 
       </StyledIconButton>
      
-    </div>
+    
   );
 };
 

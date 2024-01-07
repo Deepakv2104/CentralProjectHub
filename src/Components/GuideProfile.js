@@ -29,9 +29,9 @@ import { auth, firestore } from "../firebase/firebase";
 import EditProfile from "./EditProfile";
 import { useNavigate, useParams } from "react-router-dom";
 import { IconButton } from "@material-ui/core";
-const Profile = () => {
-  const { studentId } = useParams();
- 
+const GuideProfile = () => {
+  const { FacultyId } = useParams();
+
   const { user } = useAuth();
   const [userData, setUserData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
@@ -40,7 +40,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchStudentDetails = async () => {
       try {
-        const userDocRef = doc(firestore, "students", studentId);
+        const userDocRef = doc(firestore, "Faculties", FacultyId);
         const unsubscribe = onSnapshot(userDocRef, (doc) => {
           if (doc.exists()) {
             const studentData = doc.data();
@@ -58,16 +58,16 @@ const Profile = () => {
     };
 
     // Fetch student details based on the provided studentId
-    if (studentId) {
-      fetchStudentDetails(studentId);
+    if (FacultyId) {
+      fetchStudentDetails(FacultyId);
     } else if (userId) {
       // Fetch user data based on authentication if userId is available
       fetchUserData(userId);
     }
-  }, [studentId, userId]);
+  }, [FacultyId, userId]);
   const fetchUserData = async (userId) => {
     try {
-      const userDocRef = doc(firestore, "students", userId);
+      const userDocRef = doc(firestore, "Faculties", userId);
       const userDocSnapshot = await getDoc(userDocRef);
 
       if (userDocSnapshot.exists()) {
@@ -89,7 +89,7 @@ const Profile = () => {
     setIsEditing(false);
   };
   const handleClickProjectCount = () => {
-    navigate(`/student-dashboard/profile/${studentId}/projects`);
+    navigate(`/student-dashboard/profile/${FacultyId}/projects`);
   };
   return (
     <div style={{ paddingTop: "60px", overflow: "hidden", margin: "0 " }}>
@@ -115,12 +115,12 @@ const Profile = () => {
                 }}
               >
                 {/* Content for the left top grid */}
-                <ProfileAvatar userId={studentId} />
+                <ProfileAvatar userId={FacultyId} />
                 <Typography variant="h6" align="center">
-                  {userData.rollNo}
+                  {userData.fullName}
                 </Typography>
                 <Typography variant="h6" align="center" className="username">
-                  {userData.name || "User"}
+                  {userData.designation || "User"}
                 </Typography>
               </Paper>
             </Grid>
@@ -193,7 +193,7 @@ const Profile = () => {
             <Grid item xs={12}>
               {/* Display student details */}
               <Grid container spacing={2} style={{ height: "100%" }}>
-                <Grid item xs={12}>
+                <Grid item xs={6}>
                   <Paper
                     style={{ height: "90%", padding: 20, overflo: "auto" }}
                   >
@@ -203,8 +203,8 @@ const Profile = () => {
                         justifyContent: "space-between",
                       }}
                     >
-                      <h2>Student Details</h2>
-                      {(userId === studentId || !studentId) && !isEditing && (
+                      <h2>Faculty Details</h2>
+                      {(userId === FacultyId || !FacultyId) && !isEditing && (
                         <IconButton
                           onClick={handleEditClick}
                           style={{
@@ -234,7 +234,7 @@ const Profile = () => {
                               </TableCell>
                               <TableCell>
                                 <Typography variant="body1">
-                                  {userData.name}
+                                  {userData.fullName}
                                 </Typography>
                               </TableCell>
                             </TableRow>
@@ -259,12 +259,12 @@ const Profile = () => {
                                   variant="subtitle1"
                                   fontWeight="bold"
                                 >
-                                  Year:
+                                  E-mail
                                 </Typography>
                               </TableCell>
                               <TableCell>
                                 <Typography variant="body1">
-                                  {userData.year}
+                                  {userData.email}
                                 </Typography>
                               </TableCell>
                             </TableRow>
@@ -274,12 +274,12 @@ const Profile = () => {
                                   variant="subtitle1"
                                   fontWeight="bold"
                                 >
-                                  Section:
+                                  College ID:
                                 </Typography>
                               </TableCell>
                               <TableCell>
                                 <Typography variant="body1">
-                                  {userData.section}
+                                  {userData.collegeId}
                                 </Typography>
                               </TableCell>
                             </TableRow>
@@ -334,43 +334,98 @@ const Profile = () => {
                     </Grid>
                   </Paper>
                 </Grid>
+                <Grid item xs={6}>
+                  <Paper
+                    style={{ height: "90%", padding: 20, overflo: "auto" }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <h2>Selected Publications</h2>
+                      {(userId === FacultyId || !FacultyId) && !isEditing && (
+                        <IconButton
+                          onClick={handleEditClick}
+                          style={{
+                            color: "blue",
+                            fontSize: "14px",
+                            padding: "8px 16px",
+                            marginLeft: "10px",
+                          }}
+                        >
+                          <Edit />
+                        </IconButton>
+                      )}
+                    </div>
+
+                    <Grid item xs={12}>
+                      <div className="publications">
+                        <ul>
+                          {Array.isArray(userData.publications) &&
+                          userData.publications.length > 0 ? (
+                            userData.publications.map(
+                              (publication, publicationsIndex) => (
+                                <li key={publicationsIndex}>{publication}</li>
+                              )
+                            )
+                          ) : (
+                            <li>No publications available</li>
+                          )}
+                        </ul>
+                      </div>
+                    </Grid>
+                  </Paper>
+                </Grid>
               </Grid>
             </Grid>
             {/* Right Bottom Grid (divided vertically) */}
             <Grid item xs={12} md={6}>
               <Paper style={{ height: "100%", padding: 20 }}>
                 {/* Content for the right bottom left grid */}
-                <h2>Skills</h2>
+                <h2>Teaching Interest</h2>
 
-                <div className="skills">
+                <div className="teachingInterest">
                   <ul>
-                    {Array.isArray(userData.skills) &&
-                    userData.skills.length > 0 ? (
-                      userData.skills.map((skills, skillIndex) => (
-                        <li key={skillIndex}>{skills}</li>
-                      ))
+                    {Array.isArray(userData.teachingInterest) &&
+                    userData.teachingInterest.length > 0 ? (
+                      userData.teachingInterest.map(
+                        (teachingInterest, teachingInterestIndex) => (
+                          <li key={teachingInterestIndex}>
+                            {teachingInterest}
+                          </li>
+                        )
+                      )
                     ) : (
-                      <li>No skills available</li>
+                      <li>No data available</li>
                     )}
                   </ul>
                 </div>
               </Paper>
             </Grid>
+
             <Grid item xs={12} md={6}>
               <Paper
-                style={{
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  cursor:'pointer'
-                }}
-                onClick={handleClickProjectCount}
+                style={{ height: "100%", padding: 20 }}
+               
               >
                 {/* Content for the right bottom right grid */}
-                <h2>Project Count</h2>
-                <ProjectCount userId={studentId} />
+                <h2>Research Areas</h2>
+                <div className="researchAreas">
+                  <ul>
+                    {Array.isArray(userData.researchAreas) &&
+                    userData.researchAreas.length > 0 ? (
+                      userData.researchAreas.map(
+                        (researchAreas, researchAreasIndex) => (
+                          <li key={researchAreasIndex}>{researchAreas}</li>
+                        )
+                      )
+                    ) : (
+                      <li>No data available</li>
+                    )}
+                  </ul>
+                </div>
               </Paper>
             </Grid>
           </Grid>
@@ -380,4 +435,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default GuideProfile;

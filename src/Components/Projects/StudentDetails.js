@@ -17,7 +17,7 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 }));
 
 const StudentDetails = ({ studentId }) => {
-  console.log("inside the sd ", studentId);
+
   const [studentData, setStudentData] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {

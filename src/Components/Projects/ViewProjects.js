@@ -53,7 +53,7 @@ const ViewProjects = () => {
     }));
 
     // Sort the projects based on the submittedOn date
-    const sortedProjects = updatedProjects.sort((a, b) => {
+    const sortedProjects = updatedProjects.slice().sort((a, b) => {
       const dateA = new Date(a.submittedOn).getTime();
       const dateB = new Date(b.submittedOn).getTime();
       return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
@@ -115,7 +115,7 @@ const ViewProjects = () => {
             >
               {project.projectName}
             </div>
-            <div className="project-discription">{project.submittedOn}</div>
+            <div className="project-submittedOn">{project.submittedOn}</div>
             <StyledIconButton
               aria-label="delete"
               className="delete-button"

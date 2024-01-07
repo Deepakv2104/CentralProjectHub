@@ -20,6 +20,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { makeStyles } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import "../../Styles/SideBar.css";
+import { Person } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
   listItemText: {
@@ -116,13 +117,13 @@ const Sidebar = ({ showSidebar }) => {
         </ListItem>
         <ListItem>
           <Button
-            onClick={() => navigate("/student-dashboard/research-paper")}
+            onClick={() => navigate("/student-dashboard/guide")}
             style={{ display: "flex", alignItems: "center", color: "inherit" }}
           >
             <ListItemIcon>
               <LibraryBooksIcon />
             </ListItemIcon>
-            <ListItemText primary="Resume" className={classes.listItemText} />
+            <ListItemText primary="Guide" className={classes.listItemText} />
           </Button>
         </ListItem>
         <ListItem>
@@ -131,7 +132,7 @@ const Sidebar = ({ showSidebar }) => {
             style={{ display: "flex", alignItems: "center", color: "inherit" }}
           >
             <ListItemIcon>
-              <ReceiptIcon />
+              <Person />
             </ListItemIcon>
             <ListItemText primary="Profile" className={classes.listItemText} />
           </Button>

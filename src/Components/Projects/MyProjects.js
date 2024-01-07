@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { IconButton } from "@material-ui/core";
+import { IconButton, Typography } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ProjectSubmission from "./AddProject";
 import "../../Styles/MyProjects.css";
@@ -20,6 +20,7 @@ import {
 import { toast } from "react-toastify";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { styled } from "@mui/system";
+import { ArrowUpwardRounded, SwapVert } from "@mui/icons-material";
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
   "&:hover": {
     color: theme.palette.primary.main,
@@ -32,6 +33,7 @@ const MyProjects = () => {
   const userId = user?.uid;
   const navigate = useNavigate();
   const [isAddingProject, setIsAddingProject] = useState(false);
+  const [sortOrder, setSortOrder] = useState("desc");
 
   useEffect(() => {
     // Set up real-time listener for updates
@@ -54,6 +56,30 @@ const MyProjects = () => {
     return () => unsubscribe();
   }, [userId]);
 
+
+  const updateProjects = (snapshot) => {
+    const updatedProjects = snapshot.docs.map((doc) => ({
+      projectId: doc.id,
+      ...doc.data(),
+    }));
+
+    // Sort the projects based on the submittedOn date
+    const sortedProjects = updatedProjects.sort((a, b) => {
+      const dateA = new Date(a.submittedOn).getTime();
+      const dateB = new Date(b.submittedOn).getTime();
+      return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+    });
+
+    setProjectData(sortedProjects);
+  };
+
+
+  const handleSortClick = () => {
+    // Toggle the sorting order
+    const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
+    setSortOrder(newSortOrder);
+  };
+
   const handleContainerClick = (projectId) => {
     navigate(`/student-dashboard/add-project/${projectId}`);
     console.log("Clicked on project with projectId:", projectId);
@@ -61,7 +87,7 @@ const MyProjects = () => {
 
   return (
     <div className="actual-card">
-      <div className="back-and-project-container">
+      {/* <div className="back-and-project-container">
         <div className="back-icon-container">
           <IconButton
             aria-label="back"
@@ -71,22 +97,29 @@ const MyProjects = () => {
             <ArrowBackIcon />
           </IconButton>
         </div>
-        <div className="left-container">
-          <ProjectSubmission />
-        </div>
+      
+      </div> */}
+      <div style={{ display: "flex" ,  width: "90%",
+    maxWidth: "1210px",
+    margin: "10px auto"}}>
+       
+        <ProjectSubmission />
+        <IconButton sx={{BackgroundColor:'black'}}onClick={handleSortClick}>
+            sort
+          <SwapVert />
+        </IconButton>
       </div>
-
       {projectData.map((project, index) => (
         <div className="c2" key={index}>
-          {/* Flex container for project title and delete button */}
-          <div className="project-title-container">
+   
+         <div className="project-title-container">
             <div
               className="project-titile"
               onClick={() => handleContainerClick(project.projectId)}
             >
               {project.projectName}
             </div>
-            {/* Delete button */}
+            <div className="project-submittedOn">{project.submittedOn}</div>
             <StyledIconButton
               aria-label="delete"
               className="delete-button"

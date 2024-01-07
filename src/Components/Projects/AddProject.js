@@ -14,6 +14,8 @@ import {
   Grid,
   Box,
   Paper,
+  MenuItem,
+  Select
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { collection, addDoc, doc, getDoc } from "firebase/firestore";
@@ -50,7 +52,12 @@ const ProjectSubmission = () => {
   const [submissionDate, setSubmissionDate] = useState("");
   const WORD_LIMIT_DESCRIPTION_GOALS = 100;
   const WORD_LIMIT_PROCESS = 200;
-
+  const domainOptions = [
+    { value: "Machine Learning", label: "Machine Learning" },
+    { value: "Web Development", label: "Web Development" },
+    { value: "IOT", label: "IOT" },
+    // Add more options as needed
+  ];
   // Create storage reference for documentation files
   // Create storage reference for documentation files
   const counterStyle = {
@@ -233,7 +240,7 @@ const ProjectSubmission = () => {
 
       const userDocRef = doc(collection(db, "students"), userId);
       const userDocSnapshot = await getDoc(userDocRef);
-      const userBranch = userDocSnapshot.data()?.branch?.toLowerCase();
+      const userBranch = userDocSnapshot.data()?.branch
 
       // if (!userBranch) {
       //   console.error("User branch is undefined or empty");
@@ -300,15 +307,41 @@ const ProjectSubmission = () => {
 
   return (
     <Container container="main" maxWidth="md" > 
-      <Box
+   <Box sx={{display:'flex', marginLeft:'15px'}}>
+   <Box
         sx={{
           display: "flex",
-          justifyContent: "space-around",
+    
           alignItems: "center",
         }}
       >
         <Paper
           sx={{
+            display: "flex",
+            padding: "5px",
+            backgroundColor: "#092635",
+            borderRadius: "10px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            cursor: "pointer",
+         
+          }}
+        
+        >
+          <IconButton sx={{color:"white"}} aria-label="edit">
+          Project List
+          </IconButton>
+        </Paper>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+    
+          alignItems: "center",
+        }}
+      >
+        <Paper
+          sx={{
+             marginLeft:5,
             display: "flex",
             padding: "5px",
             borderRadius: "10px",
@@ -320,13 +353,14 @@ const ProjectSubmission = () => {
           }}
           onClick={handleOpen}
         >
-          <IconButton color="primary" aria-label="edit">
+          <IconButton color="secondary" aria-label="edit">
             Add Project
             <Edit />
           </IconButton>
         </Paper>
       </Box>
 
+   </Box>
       <Dialog open={open} onClose={handleClose} >
         <DialogTitle>Project Submission Form</DialogTitle>
         <DialogContent>
@@ -434,6 +468,30 @@ const ProjectSubmission = () => {
                     } words / ${WORD_LIMIT_PROCESS} words limit`}
                   </Typography>
                 </Grid>
+                <Grid item xs={12}>
+        <Typography variant="h6">
+          Domain
+          <Select
+            style={{ marginBottom: "10px" }}
+            variant="outlined"
+            fullWidth
+            value={projectData.domain || ""} // Set the value of the Select component
+            onChange={(e) => handleChange("domain", e.target.value)}
+            displayEmpty // Allows displaying an empty value
+          >
+            {/* Placeholder MenuItem */}
+            <MenuItem value="" disabled>
+              Select Domain
+            </MenuItem>
+            {/* Render MenuItem components using the domainOptions array */}
+            {domainOptions.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </Typography>
+      </Grid>
                 <Grid item xs={12}>
                   <Typography variant="h6" gutterBottom>
                     Features
