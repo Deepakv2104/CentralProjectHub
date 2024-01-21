@@ -27,11 +27,11 @@ import { useAuth } from "./Authentication/auth-context";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { auth, firestore } from "../firebase/firebase";
 import EditProfile from "./EditProfile";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { IconButton } from "@material-ui/core";
 const Profile = () => {
   const { studentId } = useParams();
- 
+  const location = useLocation();
   const { user } = useAuth();
   const [userData, setUserData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
@@ -65,11 +65,12 @@ const Profile = () => {
       fetchUserData(userId);
     }
   }, [studentId, userId]);
+
   const fetchUserData = async (userId) => {
     try {
       const userDocRef = doc(firestore, "students", userId);
       const userDocSnapshot = await getDoc(userDocRef);
-
+     
       if (userDocSnapshot.exists()) {
         const userData = userDocSnapshot.data();
         setUserData(userData);
@@ -89,10 +90,12 @@ const Profile = () => {
     setIsEditing(false);
   };
   const handleClickProjectCount = () => {
-    navigate(`/student-dashboard/profile/${studentId}/projects`);
+    const prefix = location.pathname.startsWith('/admin-dashboard') ? 'admin' : 'student';
+    navigate(`/${prefix}-dashboard/student-profile/${studentId}/projects/`);
   };
+  
   return (
-    <div style={{ paddingTop: "60px", overflow: "hidden", margin: "0 " }}>
+    <div style={{  overflow: "hidden", margin: "0 " }}>
       {/* Conditionally render EditProfile component */}
 
       {/* Conditionally render EditProfile component based on isEditing state */}

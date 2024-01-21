@@ -15,23 +15,32 @@ const Navbar = ({ onMenuToggle }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-  const options = user
-    ? ["Home", "student-dashboard", "Contact", "About", "Logout"]
-    : ["Home", "Contact", "About"];
+  const options = 
+  
+     ["Home", "Contact", "About"];
 
-  const handleLogout = async () => {
-    try {
-      await signOut();
-      navigate("/home");
-      toast.success("Logout successful!", { position: "top-center" });
-    } catch (error) {
-      console.error("Error during logout:", error);
-      toast.error("Error during logout. Please try again.", {
-        position: "top-center",
-      });
-    }
-  };
-
+    const handleLogout = async () => {
+      try {
+        await signOut();
+    
+        // Clear any relevant application state or user-related data
+    
+        toast.success("Logout successful!", { position: "top-right", autoClose: 1200 });
+    
+        // Delay the page reload by a short amount of time
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+        
+        navigate("/home");
+      } catch (error) {
+        console.error("Error during logout:", error);
+        toast.error("Error during logout. Please try again.", {
+          position: "top-center",
+        });
+      }
+    };
+    
   const handleMenuToggle = () => {
     setMenuOpen(!menuOpen);
     onMenuToggle(); // Notify the parent component about the menu toggle
@@ -59,12 +68,8 @@ const Navbar = ({ onMenuToggle }) => {
       {/* Text instead of logo with CSS styling */}
       <div className="logo-text">ANURAG UNIVERSITY</div>
 
-      {/* Hamburger Icon for Mobile View */}
-      {isMobile && (
-        <div className="hamburger-icon" onClick={handleMenuToggle}>
-          <MenuIcon />
-        </div>
-      )}
+   
+     
 
       {/* Search Bar */}
 

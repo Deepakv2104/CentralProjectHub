@@ -73,7 +73,7 @@ const Sidebar = ({ showSidebar }) => {
       <div className="avatar-container">
         <ProfileAvatar />
       </div>
-      <Typography variant="h6" align="center" className="username">
+      <Typography variant="h6" align="center" className="rollNo">
         {rollNo|| "NA"}
       </Typography>
       <Typography variant="h6" align="center" className="username">
@@ -128,7 +128,7 @@ const Sidebar = ({ showSidebar }) => {
         </ListItem>
         <ListItem>
           <Button
-            onClick={() => navigate(`/student-dashboard/profile/${userId}`)}
+            onClick={() => navigate(`/student-dashboard/student-profile/${userId}`)}
             style={{ display: "flex", alignItems: "center", color: "inherit" }}
           >
             <ListItemIcon>
@@ -137,17 +137,7 @@ const Sidebar = ({ showSidebar }) => {
             <ListItemText primary="Profile" className={classes.listItemText} />
           </Button>
         </ListItem>
-        <ListItem>
-          <Button
-            onClick={() => navigate("/student-dashboard/settings")}
-            style={{ display: "flex", alignItems: "center", color: "inherit" }}
-          >
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Settings" className={classes.listItemText} />
-          </Button>
-        </ListItem>
+        
       </List>
     </div>
   );

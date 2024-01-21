@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 import DownloadDocument from "./DownloadDocument";
 import { useAuth } from "../Authentication/auth-context";
 import StudentDetails from "./StudentDetails";
-
+import { useLocation } from "react-router-dom";
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
   "&:hover": {
     color: theme.palette.primary.main,
@@ -20,6 +20,7 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 }));
 
 const SingleProjectCard = () => {
+  const location = useLocation();
   const { projectId } = useParams();
   const [selectedProject, setSelectedProject] = useState(null);
   const [editMode, setEditMode] = useState(false);
@@ -107,19 +108,29 @@ const SingleProjectCard = () => {
     setEditMode(false);
   };
   const handleStudentDetailsClick = () => {
-    // Check if the current path matches the specified format
-    const isProfileProjectPath =
-      /^\/student-dashboard\/profile\/\d+\/projects\/\d+$/;
-
-    if (isProfileProjectPath.test(window.location.pathname)) {
-      // If the path matches the format "/student-dashboard/profile/:studentId/projects/:projectId",
-      // navigate to "/student-dashboard/profile/:studentId/"
+    const isStudentProfilePath = location.pathname.includes("/student-dashboard/profile/");
+    const isAdminProfilePath = location.pathname.includes("/admin-dashboard/explore/");
+  
+    if (isStudentProfilePath) {
       navigate(`/student-dashboard/profile/${selectedProject.userId}/`);
+    } else if (isAdminProfilePath) {
+      const match = location.pathname.match(/^\/admin-dashboard\/explore\/(\w+)\/(\d+)$/);
+      if (match) {
+        const branch = match[1];
+        const projectId = match[2];
+        navigate(`/admin-dashboard/explore/${branch}/${projectId}`);
+      } else {
+        console.error("Invalid path format for admin dashboard");
+        // Navigate to a default admin dashboard location if needed
+        navigate(`/admin-dashboard/student-profile/${selectedProject.userId}`);
+      }
     } else {
-      // If the path doesn't match, navigate to `${selectedProject.userId}`
-      navigate(`/student-dashboard/profile/${selectedProject.userId}`);
+      console.log('am herer')
+      navigate(`/student-dashboard/student-profile/${selectedProject.userId}`);
     }
   };
+  
+
   const getFileNameFromUrl = (url) => {
     // Extract the filename from the URL
     const urlParts = url.split("/");
@@ -127,7 +138,7 @@ const SingleProjectCard = () => {
   };
 
   return (
-    <div style={{ marginTop: "66px" }}>
+    <div >
       <Card style={cardStyle}>
         <CardContent>
           {loading ? (

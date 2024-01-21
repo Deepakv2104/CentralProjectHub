@@ -36,14 +36,16 @@ const StudentSignUp = () => {
   const [branchesData, setBranchesData] = useState({});
   const classes = useStyles();
 
+  const [loadingBranches, setLoadingBranches] = useState(true);
+  const [errorBranches, setErrorBranches] = useState(null);
+
   useEffect(() => {
     const fetchBranchesData = async () => {
       try {
         const branchesCollectionRef = collection(firestore, 'Branches');
         const branchesCollectionSnapshot = await getDocs(branchesCollectionRef);
-  
+
         if (!branchesCollectionSnapshot.empty) {
-          // Assuming there's only one document in 'Branches'
           const branchesDocData = branchesCollectionSnapshot.docs[0].data();
           setBranchesData(branchesDocData);
         } else {
@@ -51,12 +53,14 @@ const StudentSignUp = () => {
         }
       } catch (error) {
         console.error('Error fetching branches data:', error);
+        setErrorBranches(error.message);
+      } finally {
+        setLoadingBranches(false);
       }
     };
-  
+
     fetchBranchesData();
   }, []);
-  
 
   // Fields for each section
   const sections = [
@@ -102,47 +106,46 @@ const StudentSignUp = () => {
         formData[2].password
       );
       const { user } = userCredential;
-
-      // 2. Add user details to Firestore
+  
+      // 2. Add user details to Firestore with role set to 'student'
       const userDocRef = doc(firestore, 'students', user.uid);
       await setDoc(userDocRef, {
         userId: user.uid,
+        role: 'student', // Set the user role to 'student'
         ...formData[0],
         ...formData[1],
         profilePic: formData[sectionIndex].profilePic || '',
       });
-
+  
       // Show success toast
       toast.success('Signup successful!', {
         position: 'top-center',
-        autoClose: 3000, // Auto-close the toast after 3000 milliseconds (3 seconds)
+        autoClose: 3000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: false,
         draggable: true,
         progress: undefined,
       });
-
-      // Additional logic, e.g., refresh the page
-      console.log('User signed up successfully:', user);
-     
-      navigate('/student-dashboard/explore') ;// Refresh the page
+  
+      // Navigate to the student dashboard
+      navigate('/student-dashboard/explore');
     } catch (error) {
       // Show error toast
       toast.error(`Signup failed: ${error.message}`, {
         position: 'top-center',
-        autoClose: 5000, // Auto-close the toast after 5000 milliseconds (5 seconds)
+        autoClose: 5000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: false,
         draggable: true,
         progress: undefined,
       });
-
+  
       console.error('Error signing up:', error.message);
     }
   };
-
+  
   return (
     <div className="student-sign-up-container">
       <form className="student-sign-up-form">

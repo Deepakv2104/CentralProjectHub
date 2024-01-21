@@ -100,8 +100,7 @@ const StudentDetails = ({ studentId }) => {
       </div>
       <div>
         <StyledIconButton
-          aria-label="delete"
-          className="delete-button"
+          
         
         >
           <RemoveRedEyeIcon />

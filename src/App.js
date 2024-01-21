@@ -24,9 +24,16 @@ import LoginCard from "./Components/Authentication/Login.js";
 import ProportionedGridComponent from "./Components/Profile.js";
 import Profile from "./Components/Profile.js";
 import ViewProjects from "./Components/Projects/ViewProjects.js";
-import ContainerWithCards from "./Components/Guides.js";
+import GroupingComponent from "./Components/Grouping.js";
 import FacultiesGrid from "./Components/Guides.js";
-import GuideProfile from "./Components/GuideProfile.js";
+import AdminDashboard from "./Components/Faculty/AdminDashboard.js";
+import AdminExplore from "./Components/Faculty/AdminExplore.js";
+import Requests from "./Components/Faculty/Requests.js";
+import AssignedStudents from "./Components/Faculty/AssignedStudents.js";
+import GuideProfile from './Components/GuideProfile.js'
+import ClassroomComponent from "./Components/Faculty/Classroom.js";
+import CSVAnalyzer from "./Components/Format.js";
+import ApplicationsList from "./Components/Faculty/Applications.js";
 const theme = createTheme();
 
 const App = () => {
@@ -52,24 +59,36 @@ const App = () => {
               {/* <Route path="/student-dashboard/add-project/:projectId/:profileId" element={<ProportionedGridComponent/>} /> */}
              
               <Route path="/student-dashboard/explore/:branchName/:projectId/:studentId" element={<Profile/>} />
-              <Route path="/student-dashboard/profile/:studentId/" element={<Profile/>} />
+              <Route path="/student-dashboard/student-profile/:studentId/" element={<Profile/>} />
 
-              <Route path="/student-dashboard/profile/:studentId/projects" element={<ViewProjects/>} />
-              <Route path="/student-dashboard/profile/:studentId/projects/:projectId" element={<SingleProjectCard/>} />
-              <Route path="/student-dashboard/profile/:studentId/projects/:projectId" element={<SingleProjectCard/>} />
-              <Route path="/student-dashboard/blog" element={<About />} />
-              <Route path="/student-dashboard/guide" element={<FacultiesGrid />} />
+              <Route path="/student-dashboard/student-profile/:studentId/projects" element={<ViewProjects/>} />
+              <Route path="/student-dashboard/student-profile/:studentId/projects/:projectId" element={<SingleProjectCard/>} />
+              <Route path="/student-dashboard/guide" element={<FacultiesGrid/>} />
               <Route path="/student-dashboard/guide/:FacultyId" element={<GuideProfile/>} />
-             
-             
-              <Route path="/student-dashboard/settings" element={<About />} />
+              <Route path="/student-dashboard/blog" element={<Contact />} />
+              <Route path="/student-dashboard/research-paper" element={<About />} />
+              <Route path="/student-dashboard/settings" element={<GroupingComponent numStudents={57} />} />
             </Route>
 
-            {/* Add the LoginPage route */}
-            {/* <Route path="/login" element={<LoginPage />} /> */}
+           <Route>
+            <Route path="/admin-dashboard" element={<AdminDashboard/>}>
+            <Route path="/admin-dashboard/explore" element={<Explore/>}/>
+            <Route path="/admin-dashboard/explore/:branchName" element={<ProjectTable />} />
+              <Route path="/admin-dashboard/explore/:branchName/:projectId" element={<SingleProjectCard />} />
+              <Route path="/admin-dashboard/explore/:branchName/:projectId/:studentId" element={<Profile/>} />
+             
+            <Route path="/admin-dashboard/apprentice" element={<AssignedStudents/>}/> 
+            <Route path="/admin-dashboard/apprentice/:projectType/:section" element={<ClassroomComponent/>}/> 
+            <Route path="/admin-dashboard/form-group" element={<GroupingComponent numStudents={57}/>}/>
+            <Route path="/admin-dashboard/requests" element={<ApplicationsList/>}/>
+            <Route path="/admin-dashboard/profile/:FacultyId" element={<GuideProfile/>}/>
+            <Route path="/admin-dashboard/student-profile/:studentId" element={<Profile/>}/>
+            <Route path="/admin-dashboard/student-profile/:studentId/projects" element={<ViewProjects/>}/>
+            </Route>
+           </Route>
           
             <Route path="/services" element={<Services />} />
-            <Route path="/contact" element={<Contact />} />
+            <Route path="/contact" element={<GroupingComponent numStudents={57}/>} />
             <Route path="/about" element={<About />} />
            
           

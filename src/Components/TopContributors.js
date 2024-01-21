@@ -1,15 +1,15 @@
 
 import React from 'react';
-import '../Styles/ProfileCard.css'
+import '../Styles/TopContributorsCard.css'
 import { Typography } from '@material-ui/core';
 
 const TopContributorsCard = ({ name, imageUrl, backgroundColor, quote,rollNo }) => {
   return (
-    <div className="profile-card" style={{cursor:'pointer'}}>
-      <div className="avatar mx-auto bg-white">
+    <div className="profile-card1" style={{cursor:'pointer'}}>
+      <div className="avatar1 mx-auto bg-white">
         <img src={imageUrl} className="rounded-circle img-fluid" alt={name} />
       </div>
-      <div className="card-body">
+      <div className="card-body1">
         <h4 className="mb-4">{name}</h4>
         <hr />
       

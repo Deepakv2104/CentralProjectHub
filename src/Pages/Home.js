@@ -1,18 +1,22 @@
 // Home.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../Components/Submenu/Navbar";
 import { motion } from "framer-motion";
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Select, MenuItem, IconButton } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import "../Styles/Home.css";
 import LoginCard from "../Components/Authentication/Login";
-import { useAuth } from "../Components/Authentication/auth-context"; // Import your authentication context
+import { useAuth } from "../Components/Authentication/auth-context";
 
 const Home = () => {
   const [showLogin, setShowLogin] = useState(false);
-  const { user } = useAuth(); // Assuming you have a user object in your authentication context
+  const { user } = useAuth();
 
   const handleLoginClick = () => {
-    setShowLogin(prevShowLogin => !prevShowLogin);
+    setShowLogin(true);
+  };
+
+  const handleCloseLoginCard = () => {
+    setShowLogin(false);
   };
 
   return (
@@ -25,15 +29,13 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.5 }}
           >
-            <h1>Central Project Hub</h1>
+            <h1>Centralized Project Repository</h1>
             <p>Explore and manage your projects with ease.</p>
           </motion.div>
         </div>
         {user ? (
-          // Render nothing if the user is logged in
           null
         ) : (
-          // Render the login button if the user is not logged in
           <div style={{ display: "flex" }}>
             <Button
               type="button"
@@ -50,11 +52,11 @@ const Home = () => {
                 margin: 20,
               }}
             >
-              Login
+              Login / SignUp
             </Button>
           </div>
         )}
-        {showLogin && <LoginCard />} {/* Conditionally render the Login component */}
+     {showLogin && <LoginCard isOpen={showLogin} onClose={handleCloseLoginCard} />}
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 /* ExploreProjects.css */
 
 .card-carousel-container {
+
   position: relative;
   overflow: hidden;
   width: 100%;
@@ -102,6 +103,7 @@
   transition: transform 0.3s ease-in-out;
   overflow: hidden; /* or overflow: auto; or overflow: scroll; depending on your preference */
   word-wrap: break-word;
+
 }
 
 .card-content h3,

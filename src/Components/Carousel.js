@@ -1,25 +1,27 @@
 // ExploreProjects.js
+
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import '../Styles/Carousel.css';
 
 const Carousel = ({ title, data, cardWidth, visibleCards }) => {
   const carouselRef = useRef(null);
   const navigate = useNavigate();
+  const role = useParams();
+  const location = useLocation();
 
   const scroll = (direction) => {
     if (carouselRef.current) {
       const scrollDistance = direction === 'left' ? -cardWidth : cardWidth;
       carouselRef.current.scrollLeft += scrollDistance;
-      
     }
   };
 
   const handleCardClick = (item) => {
-    // Use useHistory to navigate when a card is clicked
-    navigate(`/student-dashboard/explore/${item.name}`);
+    const prefix = location.pathname.startsWith('/admin-dashboard') ? 'admin' : 'student';
+    navigate(`/${prefix}-dashboard/explore/${item.name}`);
   };
 
   return (
@@ -38,8 +40,6 @@ const Carousel = ({ title, data, cardWidth, visibleCards }) => {
               <img src={item.image} alt={item.name} className="branch-image" />
               <div className="card-content">
                 <p>{item.name}</p>
-                
-                
               </div>
             </div>
           ))}
@@ -52,21 +52,21 @@ const Carousel = ({ title, data, cardWidth, visibleCards }) => {
   );
 };
 
-// Carousel.propTypes = {
-//   title: PropTypes.string.isRequired,
-//   data: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       name: PropTypes.string.isRequired,
-//       image: PropTypes.string.isRequired,
-//     })
-//   ).isRequired,
-//   cardWidth: PropTypes.number.isRequired,
-//   visibleCards: PropTypes.number.isRequired,
-// };
+Carousel.propTypes = {
+  title: PropTypes.string.isRequired,
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      image: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  cardWidth: PropTypes.number.isRequired,
+  visibleCards: PropTypes.number.isRequired,
+};
 
-// Carousel.defaultProps = {
-//   cardWidth: 200,
-//   visibleCards: 4,
-// };
+Carousel.defaultProps = {
+  cardWidth: 200,
+  visibleCards: 4,
+};
 
 export default Carousel;

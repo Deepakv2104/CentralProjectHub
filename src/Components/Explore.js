@@ -14,7 +14,7 @@ const Explore = () => {
         <Carousel
           title="Explore branches"
           data={branches}
-          cardWidth={180} // Adjusted cardWidth for the branches carousel
+          cardWidth="30%" // Use a relative unit like percentage for responsiveness
           visibleCards={4}
         />
       </div>
@@ -22,7 +22,7 @@ const Explore = () => {
         <Carousel
           title="Explore Computer Science Projects"
           data={computerScienceDomains}
-          cardWidth={180} // Adjusted cardWidth for the computer science projects carousel
+          cardWidth="30%" // Use a relative unit like percentage for responsiveness
           visibleCards={4}
         />
       </div>

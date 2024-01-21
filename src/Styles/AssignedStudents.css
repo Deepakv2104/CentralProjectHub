@@ -1,0 +1,27 @@
+.custom-card {
+    padding: 16px;
+    background-color: #3f51b5;
+    border: 2px solid #fff;
+    text-align: center;
+    height: 80px;
+    transition: box-shadow 0.3s;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .custom-card:hover {
+    box-shadow: 15px 15px 20px rgba(0, 0, 0, 0.3);
+  }
+
+   
+  
+ .custom-card .loader {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+  }
+  

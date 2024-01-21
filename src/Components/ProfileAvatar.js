@@ -46,6 +46,7 @@ const ProfileAvatar = ({ userId: propUserId }) => {
   const { userId: paramsUserId } = useParams();
   const userId = propUserId || (user ? user.uid : paramsUserId);
 
+
   const [profileData, setProfileData] = useState({
     profilePic: '',
     branch: '',
@@ -60,12 +61,16 @@ const ProfileAvatar = ({ userId: propUserId }) => {
     const fetchProfileData = async () => {
       try {
         if (userId) {
+          console.log(userId);
           const studentDocRef = doc(firestore, 'students', userId);
-          const teacherDocRef = doc(firestore, 'Faculties', userId);
-  
+          const adminDocRef = doc(firestore, 'Admins', userId);
+          const facultyDocRef = doc(firestore, 'Faculties', userId);
+
+
           const studentDocSnapshot = await getDoc(studentDocRef);
-          const teacherDocSnapshot = await getDoc(teacherDocRef);
-  
+          const adminDocSnapshot = await getDoc(adminDocRef);
+          const facultyDocSnapshot = await getDoc(facultyDocRef);
+
           if (studentDocSnapshot.exists()) {
             const data = studentDocSnapshot.data();
             setProfileData({
@@ -75,10 +80,19 @@ const ProfileAvatar = ({ userId: propUserId }) => {
               rollNo: data.rollNo || '',
               year: data.year || '',
               // Include other properties specific to students
-              name: data.name || '',
+              name: data.fullName || '',
             });
-          } else if (teacherDocSnapshot.exists()) {
-            const data = teacherDocSnapshot.data();
+          } else if (adminDocSnapshot.exists()) {
+            const data = adminDocSnapshot.data();
+            console.log(data.fullName)
+            setProfileData({
+              profilePic: data.profilePic || '',
+              // Include other properties specific to teachers
+              name: data.fullName || '',
+            });
+          }
+          else if (facultyDocSnapshot.exists()) {
+            const data = facultyDocSnapshot.data();
             console.log(data.fullName)
             setProfileData({
               profilePic: data.profilePic || '',
@@ -96,10 +110,10 @@ const ProfileAvatar = ({ userId: propUserId }) => {
       }
     };
   
-    if (!initializing) {
+    if (!initializing && user) {
       fetchProfileData();
     }
-  }, [userId, initializing]);
+  }, [userId, initializing,user]);
   
 
 

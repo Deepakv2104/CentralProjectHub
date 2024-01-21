@@ -8,15 +8,15 @@ body {
 .actual-card {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 1295px;
+  /* width: 100%; */
+  /* max-width: 1295px; */
   /* Adjusted height to auto for dynamic content */
-  margin-top: 63px;
+ 
 }
 
 .c1 {
   width: 90%;
-  max-width: 1210px;
+  /* max-width: 1210px; */
   max-height: 400px; /* Adjusted max-height for the cards */
   margin: 10px auto; /* Centered content horizontally */
   background-color: white;
@@ -30,7 +30,7 @@ body {
 /* Media Query for tablets and smaller screens */
 @media (max-width: 768px) {
   .c1 {
-    width: 95%; /* Adjusted width for smaller screens */
+    width: 90%; /* Adjusted width for smaller screens */
     max-height: none; /* Reset max-height for smaller screens */
   }
 }
@@ -38,7 +38,7 @@ body {
 /* Media Query for mobile phones */
 @media (max-width: 576px) {
   .c1 {
-    width: 100%; /* Adjusted width for smaller screens */
+    width: 90%; /* Adjusted width for smaller screens */
     padding: 15px; /* Adjusted padding for smaller screens */
     max-height: none; /* Reset max-height for smaller screens */
   }

@@ -4,6 +4,7 @@ import Navbar from '../Components/Submenu/Navbar';
 import Sidebar from '../Components/Submenu/SideBar';
 import '../Styles/Dashboard.css';
 import { useAuth } from '../Components/Authentication/auth-context';
+import StudentNavbar from '../Components/Submenu/studentNavbar';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -24,13 +25,15 @@ const Dashboard = () => {
 
   return (
     <div className='dashboard-container'>
-      <Navbar onMenuToggle={handleMenuToggle} /> {/* Pass onMenuToggle prop here */}
-      <div className='content-container'>
-        {menuOpen && <Sidebar />}
-        <div className='main-content'>
-          <Outlet />
-        </div>
-      </div>
+      
+      
+       <StudentNavbar>
+       <Outlet />
+       </StudentNavbar>
+       
+        
+       
+      
     </div>
   );
 };

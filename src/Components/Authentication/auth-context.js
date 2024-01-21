@@ -1,12 +1,12 @@
-// auth-context.js
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebase/firebase'; 
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const auth = getAuth();
+ 
 
   const signIn = async (email, password) => {
     try {
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, [auth]);
 
-  return <AuthContext.Provider value={{ user, signIn, signOut: signOutUser }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, signIn, signOut: signOutUser, auth }}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {

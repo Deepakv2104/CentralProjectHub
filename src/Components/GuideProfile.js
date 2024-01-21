@@ -31,55 +31,61 @@ import { useNavigate, useParams } from "react-router-dom";
 import { IconButton } from "@material-ui/core";
 const GuideProfile = () => {
   const { FacultyId } = useParams();
-
   const { user } = useAuth();
   const [userData, setUserData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
-  const userId = user.uid;
+  const userId = user ? user.uid : null;
   const navigate = useNavigate();
-  useEffect(() => {
-    const fetchStudentDetails = async () => {
+
+
+   useEffect(() => {
+    const fetchUserData = async (userId) => {
       try {
+        const userDocRef = doc(firestore, "Faculties", userId);
+        const userDocSnapshot = await getDoc(userDocRef);
+
+        if (userDocSnapshot.exists()) {
+          const userData = userDocSnapshot.data();
+          setUserData(userData);
+        } else {
+          console.log("User document not found");
+        }
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
+
+    const fetchFacultyDetails = async () => {
+      try {
+        console.log("Fetching faculty details for FacultyId:", FacultyId);
         const userDocRef = doc(firestore, "Faculties", FacultyId);
+        console.log("User document reference:", userDocRef);
         const unsubscribe = onSnapshot(userDocRef, (doc) => {
           if (doc.exists()) {
-            const studentData = doc.data();
-            setUserData(studentData);
+            const facultyData = doc.data();
+            setUserData(facultyData);
           } else {
-            console.log("User document not found");
+            console.log("Faculty document not found for FacultyId:", FacultyId);
           }
         });
 
         // Clean up the subscription when the component unmounts
         return () => unsubscribe();
       } catch (error) {
-        console.error("Error fetching student details:", error);
+        console.error("Error fetching faculty details:", error);
       }
     };
 
-    // Fetch student details based on the provided studentId
-    if (FacultyId) {
-      fetchStudentDetails(FacultyId);
-    } else if (userId) {
-      // Fetch user data based on authentication if userId is available
+    // Fetch user data based on authentication if userId is available
+    if (userId && !FacultyId) {
       fetchUserData(userId);
+    } else if (FacultyId) {
+      // Fetch faculty details based on the provided FacultyId
+      fetchFacultyDetails(FacultyId);
+    } else {
+      console.log("User not logged in");
     }
   }, [FacultyId, userId]);
-  const fetchUserData = async (userId) => {
-    try {
-      const userDocRef = doc(firestore, "Faculties", userId);
-      const userDocSnapshot = await getDoc(userDocRef);
-
-      if (userDocSnapshot.exists()) {
-        const userData = userDocSnapshot.data();
-        setUserData(userData);
-      } else {
-        console.log("User document not found");
-      }
-    } catch (error) {
-      console.error("Error fetching user details:", error);
-    }
-  };
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -88,15 +94,16 @@ const GuideProfile = () => {
   const handleEditDone = () => {
     setIsEditing(false);
   };
+
   const handleClickProjectCount = () => {
     navigate(`/student-dashboard/profile/${FacultyId}/projects`);
   };
   return (
-    <div style={{ paddingTop: "60px", overflow: "hidden", margin: "0 " }}>
-      {/* Conditionally render EditProfile component */}
+    <div style={{  overflow: "hidden", margin: "0 " }}>
+    
 
-      {/* Conditionally render EditProfile component based on isEditing state */}
-      {isEditing && <EditProfile onEditDone={handleEditDone} />}
+     
+     {isEditing && <EditProfile onEditDone={handleEditDone} />}
 
       <Grid container spacing={2} style={{ height: "80%" }}>
         {/* Left Grid (30%) */}

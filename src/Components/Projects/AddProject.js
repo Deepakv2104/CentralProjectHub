@@ -60,19 +60,19 @@ const ProjectSubmission = () => {
   ];
   // Create storage reference for documentation files
   // Create storage reference for documentation files
-  const counterStyle = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "200px",
-    height: "80px",
-    border: "2px solid #333",
-    borderRadius: "8px",
-    fontSize: "2rem",
-    fontFamily: "monospace",
-    backgroundColor: "#f0f0f0",
-    color: "#333",
-  };
+  // const counterStyle = {
+  //   display: "flex",
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   width: "200px",
+  //   height: "80px",
+  //   border: "2px solid #333",
+  //   borderRadius: "8px",
+  //   fontSize: "2rem",
+  //   fontFamily: "monospace",
+  //   backgroundColor: "#f0f0f0",
+  //   color: "#333",
+  // };
   const handleTextChange = (field, value, wordLimit) => {
     const words = value.split(/\s+/);
 
@@ -306,7 +306,7 @@ const ProjectSubmission = () => {
   };
 
   return (
-    <Container container="main" maxWidth="md" > 
+    <Container   > 
    <Box sx={{display:'flex', marginLeft:'15px'}}>
    <Box
         sx={{

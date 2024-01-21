@@ -1,26 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { IconButton, Typography } from "@material-ui/core";
-
-import { getDoc } from "firebase/firestore";
-import "../../Styles/MyProjects.css";
-import firestore from "../../firebase/firebase";
-import {
-  getFirestore,
-  collection,
-  query,
-  where,
-  onSnapshot,
-  getDocs,
-  deleteDoc,
-  doc,
-  addDoc,
-} from "firebase/firestore";
+import { getFirestore, collection, query, where, onSnapshot } from "firebase/firestore";
 import { toast } from "react-toastify";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { styled } from "@mui/system";
 import StudentDetails from "./StudentDetails";
-import { ArrowUpwardRounded, SwapVert } from "@mui/icons-material";
+import { SwapVert } from "@mui/icons-material";
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
   "&:hover": {
@@ -31,9 +17,8 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 const ViewProjects = () => {
   const [projectData, setProjectData] = useState([]);
   const { studentId } = useParams();
-  const [studentData, setStudentData] = useState(null);
   const navigate = useNavigate();
-  const [isAddingProject, setIsAddingProject] = useState(false);
+  const location = useLocation();
   const [sortOrder, setSortOrder] = useState("desc"); // "asc" or "desc"
 
   useEffect(() => {
@@ -63,7 +48,15 @@ const ViewProjects = () => {
   };
 
   const handleContainerClick = (projectId) => {
-    navigate(`/student-dashboard/profile/${studentId}/projects/${projectId}`);
+    // Check the role based on the current path
+    const isAdmin = location.pathname.includes("/admin-dashboard");
+
+    // Navigate based on the role
+    if (isAdmin) {
+      navigate(`/admin-dashboard/explore/${studentId}/${projectId}`);
+    } else {
+      navigate(`/student-dashboard/student-profile/${studentId}/projects/${projectId}`);
+    }
   };
 
   const handleClickStudent = () => {
@@ -99,9 +92,9 @@ const ViewProjects = () => {
         >
           {studentId.name} Projects List
         </Typography>
-       
+
         <IconButton onClick={handleSortClick}>
-            sort
+          sort
           <SwapVert />
         </IconButton>
       </div>

@@ -17,6 +17,7 @@ import {
   doc,
   addDoc,
 } from "firebase/firestore";
+import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "react-toastify";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { styled } from "@mui/system";
@@ -28,6 +29,7 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 }));
 
 const MyProjects = () => {
+  const [loading, setLoading] = useState(true);
   const [projectData, setProjectData] = useState([]);
   const { user } = useAuth();
   const userId = user?.uid;
@@ -36,26 +38,39 @@ const MyProjects = () => {
   const [sortOrder, setSortOrder] = useState("desc");
 
   useEffect(() => {
-    // Set up real-time listener for updates
-    const db = getFirestore();
-    const projectsCollection = collection(db, "projects");
-    const q = query(projectsCollection, where("userId", "==", userId));
-
-    const unsubscribe =
-      userId &&
-      onSnapshot(q, (snapshot) => {
-        const updatedProjects = snapshot.docs.map((doc) => ({
+    const fetchData = async () => {
+      try {
+        const db = getFirestore();
+        const projectsCollection = collection(db, "projects");
+        const q = query(projectsCollection, where("userId", "==", userId));
+        
+        // Retrieve initial data
+        const initialQuerySnapshot = await getDocs(q);
+        const initialProjects = initialQuerySnapshot.docs.map((doc) => ({
           projectId: doc.id,
           ...doc.data(),
         }));
-        console.log("Updated projects:", updatedProjects);
-        setProjectData(updatedProjects);
-      });
-
-    // Unsubscribe from the listener when the component is unmounted
-    return () => unsubscribe();
-  }, [userId]);
-
+  
+        // Set initial data and loading state
+        setProjectData(initialProjects);
+        setLoading(false);
+  
+        // Set up real-time listener for updates
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+          updateProjects(snapshot);
+        });
+  
+        // Unsubscribe from the listener when the component is unmounted
+        return () => unsubscribe();
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false); // Set loading to false even in case of an error
+      }
+    };
+  
+    fetchData();
+  }, [userId, sortOrder]);
+  
 
   const updateProjects = (snapshot) => {
     const updatedProjects = snapshot.docs.map((doc) => ({
@@ -87,18 +102,7 @@ const MyProjects = () => {
 
   return (
     <div className="actual-card">
-      {/* <div className="back-and-project-container">
-        <div className="back-icon-container">
-          <IconButton
-            aria-label="back"
-            onClick={() => navigate(-1)}
-            style={{ marginRight: "16px" }}
-          >
-            <ArrowBackIcon />
-          </IconButton>
-        </div>
-      
-      </div> */}
+
       <div style={{ display: "flex" ,  width: "90%",
     maxWidth: "1210px",
     margin: "10px auto"}}>
@@ -109,49 +113,55 @@ const MyProjects = () => {
           <SwapVert />
         </IconButton>
       </div>
-      {projectData.map((project, index) => (
-        <div className="c2" key={index}>
-   
-         <div className="project-title-container">
-            <div
-              className="project-titile"
-              onClick={() => handleContainerClick(project.projectId)}
-            >
-              {project.projectName}
+
+      {loading ? (
+          <div style={{ textAlign: "center", marginTop: "20px" }}>
+            <CircularProgress />
+          </div>
+        ) : (<div>{projectData.map((project, index) => (
+          <div className="c2" key={index}>
+     
+           <div className="project-title-container">
+              <div
+                className="project-titile"
+                onClick={() => handleContainerClick(project.projectId)}
+              >
+                {project.projectName}
+              </div>
+              <div className="project-submittedOn">{project.submittedOn}</div>
+              <StyledIconButton
+                aria-label="delete"
+                className="delete-button"
+                onClick={() => handleContainerClick(project.projectId)}
+              >
+                <RemoveRedEyeIcon />
+              </StyledIconButton>
             </div>
-            <div className="project-submittedOn">{project.submittedOn}</div>
-            <StyledIconButton
-              aria-label="delete"
-              className="delete-button"
-              onClick={() => handleContainerClick(project.projectId)}
-            >
-              <RemoveRedEyeIcon />
-            </StyledIconButton>
+  
+            <div className="project-discription">{project.description}</div>
+  
+            <div className="skills">
+              <ul>
+                {project.skillsUsed && Array.isArray(project.skillsUsed) ? (
+                  project.skillsUsed.map((skill, skillIndex) => (
+                    <li key={skillIndex}>{skill}</li>
+                  ))
+                ) : (
+                  <li>No skills available</li>
+                )}
+              </ul>
+            </div>
+  
+            
+           
           </div>
-
-          <div className="project-discription">{project.description}</div>
-
-          <div className="skills">
-            <ul>
-              {project.skillsUsed && Array.isArray(project.skillsUsed) ? (
-                project.skillsUsed.map((skill, skillIndex) => (
-                  <li key={skillIndex}>{skill}</li>
-                ))
-              ) : (
-                <li>No skills available</li>
-              )}
-            </ul>
-          </div>
-
-          {/* Add a horizontal line after each project card */}
-         
-        </div>
-      )
+        )
+        
+        )
+        
+        }
+         <hr style={{ border: "1px solid #333" }} /></div>)}
       
-      )
-      
-      }
-       <hr style={{ border: "1px solid #333" }} />
     </div>
     
   );

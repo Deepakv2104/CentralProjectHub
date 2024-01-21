@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import ProfileCard from './ProfileCard';
 import profiles from '../Data/ProfileData';
 import '../Styles/ProfileCarousel.css';
+import TopContributorsCard from './TopContributors';
 
 const ProfileCarousel = () => {
   const carouselRef = useRef(null);
@@ -44,7 +45,7 @@ const ProfileCarousel = () => {
       <div className="card-carousel" ref={carouselRef}>
         {profiles.map((item, index) => (
           <div key={index} className="card1" onClick={() => handleCardClick(item)}>
-            <ProfileCard
+            <TopContributorsCard
               name={item.name}
               imageUrl={item.imageUrl}
               backgroundColor={item.backgroundColor}
