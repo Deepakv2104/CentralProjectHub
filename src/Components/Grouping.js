@@ -16,6 +16,9 @@ import {
   TableContainer,
 
 } from "@mui/material";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Search from "@mui/icons-material/Search";
 import { arrayUnion } from 'firebase/firestore';
 
@@ -431,8 +434,17 @@ useEffect(() => {
           console.error(`Invalid group data at index ${index}. Skipping.`);
           return;
         }
-  
-        // Create a new document in the "groups" collection
+        console.log("Adding document to 'groups' collection with data:", {
+          groupName: `Group ${index + 1}`,
+          students: group.map((student) => student.userId),
+          guideId: guideIds[index] || "",
+          domain: selectedDomain[index] || "",
+          branch: branch,
+          year: filterYear,
+          section: filterSection,
+          projectType: projectType,
+        });
+        
         const groupDocRef = await addDoc(collection(db, "groups"), {
           groupName: `Group ${index + 1}`,
           students: group.map((student) => student.userId),
@@ -442,6 +454,11 @@ useEffect(() => {
           year: filterYear,
           section: filterSection,
           projectType: projectType,
+        });
+        
+        // Attach the groupId to the group document
+        await updateDoc(groupDocRef, {
+          groupId: groupDocRef.id,
         });
   
         // Update each student document with the groupId
@@ -461,12 +478,14 @@ useEffect(() => {
           groupIds: arrayUnion(groupDocRef.id),
         });
       });
-  
+      toast.success("Data uploaded successfully!");
       console.log("Data uploaded successfully!");
     } catch (error) {
       console.error("Error uploading data:", error);
+      toast.error("Error uploading data. Please try again.");   
     }
   };
+  
   
   
   
@@ -499,7 +518,7 @@ useEffect(() => {
     displayEmpty
   >
     <MenuItem disabled value="">
-      Select Section
+      Select Branch
     </MenuItem>
     {/* Fetch branch names dynamically from Firebase */}
     {branches.map((branchName) => (
@@ -590,10 +609,10 @@ useEffect(() => {
                 Name
               </TableCell>
               <TableCell style={{ backgroundColor: "#273656", color: "white" }}>
-                Students
+              Roll Number
               </TableCell>
               <TableCell style={{ backgroundColor: "#273656", color: "white" }}>
-                CGPAs
+                CGPA
               </TableCell>
               <TableCell style={{ backgroundColor: "#273656", color: "white" }}>
                 Domain

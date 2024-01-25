@@ -53,25 +53,23 @@ const ProfileAvatar = ({ userId: propUserId }) => {
     section: '',
     rollNo: '',
     year: '',
+    collegeId:'',
+    name:'',
   });
 
   const [uploading, setUploading] = useState(false);
-
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
         if (userId) {
           console.log(userId);
           const studentDocRef = doc(firestore, 'students', userId);
-          const adminDocRef = doc(firestore, 'Admins', userId);
           const facultyDocRef = doc(firestore, 'Faculties', userId);
-
-
+  
           const studentDocSnapshot = await getDoc(studentDocRef);
-          const adminDocSnapshot = await getDoc(adminDocRef);
           const facultyDocSnapshot = await getDoc(facultyDocRef);
-
-          if (studentDocSnapshot.exists()) {
+  
+          if (studentDocSnapshot.exists() && studentDocSnapshot.data().role === 'student') {
             const data = studentDocSnapshot.data();
             setProfileData({
               profilePic: data.profilePic || '',
@@ -79,28 +77,19 @@ const ProfileAvatar = ({ userId: propUserId }) => {
               section: data.section || '',
               rollNo: data.rollNo || '',
               year: data.year || '',
-              // Include other properties specific to students
               name: data.fullName || '',
             });
-          } else if (adminDocSnapshot.exists()) {
-            const data = adminDocSnapshot.data();
-            console.log(data.fullName)
-            setProfileData({
-              profilePic: data.profilePic || '',
-              // Include other properties specific to teachers
-              name: data.fullName || '',
-            });
-          }
-          else if (facultyDocSnapshot.exists()) {
+          } else if (facultyDocSnapshot.exists() && facultyDocSnapshot.data().role === 'admin') {
             const data = facultyDocSnapshot.data();
-            console.log(data.fullName)
+            console.log(data.fullName);
             setProfileData({
               profilePic: data.profilePic || '',
-              // Include other properties specific to teachers
+              collegeId: data.collegeId || '',
+              branch: data.branch || '',
               name: data.fullName || '',
             });
           } else {
-            console.log('No such document in both collections!');
+            console.log('No such document in any collection or invalid role!');
           }
         } else {
           console.log('No current user!');
@@ -113,7 +102,9 @@ const ProfileAvatar = ({ userId: propUserId }) => {
     if (!initializing && user) {
       fetchProfileData();
     }
-  }, [userId, initializing,user]);
+  }, [userId, initializing, user]);
+  
+  
   
 
 
@@ -122,43 +113,75 @@ const ProfileAvatar = ({ userId: propUserId }) => {
       document.getElementById('profilePicInput').click();
     }
   };
-
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
-
+  
     if (file) {
       try {
-        const { branch, section, rollNo, year } = profileData;
-        const Branch = branch;
-        const Section = section;
-        const Year = year;
-        setUploading(true); // Set uploading state to true
-
-        const storageRef = ref(
-          getStorage(),
-          `anurag-university/students/year/${Year}/${Branch}/${Section}/${rollNo}/profilePic/`
-        );
-        const snapshot = await uploadBytes(storageRef, file);
-        const downloadURL = await getDownloadURL(snapshot.ref);
-
+        console.log(profileData);
+        let storagePath = '';
+  
         if (userId) {
-          const userDocRef = doc(firestore, 'students', userId);
-          await setDoc(userDocRef, { profilePic: downloadURL }, { merge: true });
-          setProfileData((prevData) => ({
-            ...prevData,
-            profilePic: downloadURL,
-          }));
+          const studentDocSnapshot = await getDoc(doc(firestore, 'students', userId));
+  
+          if (studentDocSnapshot.exists() && studentDocSnapshot.data().role === 'student') {
+            let data = studentDocSnapshot.data();
+            storagePath = `anurag-university/students/year/${data.year}/${data.branch}/${data.section}/${data.rollNo}/profilePic/`;
+          } else {
+            const facultyDocSnapshot = await getDoc(doc(firestore, 'Faculties', userId));
+  
+            if (facultyDocSnapshot.exists() && facultyDocSnapshot.data().role === 'admin') {
+              const facultyData = facultyDocSnapshot.data();
+              const CollegeId = facultyData.collegeId;
+              const Name = facultyData.fullName;
+              storagePath = `anurag-university/faculties/${facultyData.branch}/${CollegeId}/${Name}/profilePic/`;
+            } else {
+              console.log('No such document in any collection or invalid role!');
+            }
+          }
         } else {
-          console.log('No current user to update profile picture for.');
+          console.log('No current user!');
+        }
+  
+        if (storagePath) {
+          const storageRef = ref(getStorage(), storagePath);
+          const snapshot = await uploadBytes(storageRef, file);
+          const downloadURL = await getDownloadURL(snapshot.ref);
+  
+          if (userId) {
+            let userCollection, userDocRef;
+  
+            if (storagePath.includes('students')) {
+              userCollection = 'students';
+            } else if (storagePath.includes('faculties')) {
+              userCollection = 'Faculties';
+            }
+  
+            if (userCollection) {
+              userDocRef = doc(firestore, userCollection, userId);
+  
+              await setDoc(userDocRef, { profilePic: downloadURL }, { merge: true });
+              setProfileData((prevData) => ({
+                ...prevData,
+                profilePic: downloadURL,
+              }));
+            } else {
+              console.log('No valid user collection found.');
+            }
+          } else {
+            console.log('No current user to update profile picture for.');
+          }
         }
       } catch (error) {
         console.error('Error uploading profile picture:', error);
       } finally {
-        setUploading(false); // Set uploading state back to false
+        setUploading(false);
       }
     }
   };
-
+  
+  
+  
   return (
     <div className={classes.avatarContainer}>
       <Avatar

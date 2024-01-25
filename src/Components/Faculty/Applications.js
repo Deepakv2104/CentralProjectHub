@@ -142,10 +142,7 @@ const ApplicationsList = () => {
               </Table>
             </CardContent>
           </Card>
-          {/* Add pagination controls if needed */}
-          <IconButton className={classes.nextPageIcon} color="primary">
-            <ArrowForwardIcon />
-          </IconButton>
+         
         </Grid>
 
         {/* Right Side: Analysis */}

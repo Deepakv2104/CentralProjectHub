@@ -32,6 +32,8 @@ import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "../../firebase/firebase";
 import { ToastContainer, toast } from "react-toastify";
 import Popover from "@material-ui/core/Popover";
+import { messaging } from "../../firebase/firebase";
+import { onMessage , getToken} from "firebase/messaging";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -144,6 +146,7 @@ const NavBar = ({ children }) => {
   const [designation, setDesignation] = useState("");
   const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
   const userId = user ? user.uid : null;
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -166,7 +169,8 @@ const NavBar = ({ children }) => {
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
-    };
+    };  
+
 
     fetchUserData();
   }, [userId]);
@@ -212,17 +216,16 @@ const NavBar = ({ children }) => {
   };
 
   const notificationContent = (
-    <div style={{ width: '300px', padding: '16px' }}>
-    <List>
-      <ListItem>
-        <ListItemText primary="Notification 1" />
-      </ListItem>
-      <ListItem>
-        <ListItemText primary="Notification 2" />
-      </ListItem>
-      {/* Add more notifications as needed */}
-    </List>
-  </div>
+    <div style={{ width: "300px", padding: "16px" }}>
+      <List>
+        {/* Iterate over real-time notifications received from FCM */}
+        {notifications.map((notification, index) => (
+          <ListItem key={index}>
+            <ListItemText primary={notification.title} />
+          </ListItem>
+        ))}
+      </List>
+    </div>
   );
   const isMobile = useMediaQuery("(max-width:600px)");
   return (

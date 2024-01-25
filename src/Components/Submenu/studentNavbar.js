@@ -287,7 +287,7 @@ const StudentNavbar = ({ children }) => {
               <ListItemIcon>
                 <GroupAddIcon />
               </ListItemIcon>
-              <ListItemText primary="Group" />
+              <ListItemText primary="Guide" />
             </Button>
           </ListItem>
           <ListItem>

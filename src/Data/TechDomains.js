@@ -1,20 +1,17 @@
 // ComputerScienceDomains.js
 const computerScienceDomains = [
+    
     {
-      name: 'Computer Science',
-      image: 'https://via.placeholder.com/150/FF5733/FFFFFF?text=CS', // Sample image for Computer Science
-    },
-    {
-      name: 'ai',
-      image: 'https://via.placeholder.com/150/27ae60/FFFFFF?text=AI', // Sample image for Artificial Intelligence
+      name: 'Web Development',
+      image: 'https://via.placeholder.com/150/27ae60/FFFFFF?text=WD', // Sample image for Artificial Intelligence
     },
     {
       name: 'Machine Learning',
       image: 'https://via.placeholder.com/150/3498db/FFFFFF?text=ML', // Sample image for Machine Learning
     },
     {
-      name: 'Data Science',
-      image: 'https://via.placeholder.com/150/2ecc71/FFFFFF?text=DS', // Sample image for Data Science
+      name: 'IOT',
+      image: 'https://via.placeholder.com/150/2ecc71/FFFFFF?text=IOT', // Sample image for Data Science
     },
     {
       name: 'Quantum Computing',

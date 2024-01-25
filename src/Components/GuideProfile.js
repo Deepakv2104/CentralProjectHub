@@ -29,6 +29,7 @@ import { auth, firestore } from "../firebase/firebase";
 import EditProfile from "./EditProfile";
 import { useNavigate, useParams } from "react-router-dom";
 import { IconButton } from "@material-ui/core";
+import EditGuideProfile from "./EditGuideProfile";
 const GuideProfile = () => {
   const { FacultyId } = useParams();
   const { user } = useAuth();
@@ -103,7 +104,7 @@ const GuideProfile = () => {
     
 
      
-     {isEditing && <EditProfile onEditDone={handleEditDone} />}
+     {isEditing && <EditGuideProfile onEditDone={handleEditDone} />}
 
       <Grid container spacing={2} style={{ height: "80%" }}>
         {/* Left Grid (30%) */}
@@ -221,7 +222,7 @@ const GuideProfile = () => {
                             marginLeft: "10px",
                           }}
                         >
-                          <Edit />
+                         
                         </IconButton>
                       )}
                     </div>

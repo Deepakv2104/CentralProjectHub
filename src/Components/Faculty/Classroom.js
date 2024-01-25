@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { useParams } from "react-router-dom";
 import {
   Grid,
@@ -29,204 +32,307 @@ import {
   where,
   query,
   updateDoc,
+  onSnapshot,
+  deleteDoc,
 addDoc
 } from "firebase/firestore";
 import { useAuth } from "../Authentication/auth-context";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const ClassroomComponent = () => {
   const auth = useAuth();
   const { projectType, section } = useParams();
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const [matchingGroups, setMatchingGroups] = useState([]);
+  const [studentDetails, setStudentDetails] = useState([]);
   const [assignmentTitle, setAssignmentTitle] = useState("");
   const [assignmentDeadline, setAssignmentDeadline] = useState("");
   const [updateMessage, setUpdateMessage] = useState("");
   const [comments, setComments] = useState([]);
   const [submittedAssignments, setSubmittedAssignments] = useState([]);
-  const [unreadNotifications, setUnreadNotifications] = useState(3);
   const [selectedAssignment, setSelectedAssignment] = useState(null);
-  const [attachment, setAttachment] = useState('');
-   const [currentUserId, setCurrentUserId] = useState(null);
-  const [groups, setGroups] = useState([]);
-  const [studentDetails, setStudentDetails] = useState([]);
-  const[studentIds, setStudentIds] = useState([]);
-  const [matchingGroups, setMatchingGroups] = useState([]);
-  const [students, setStudents] = useState([
-    { id: 1, name: "Student One", avatar: "S1" },
-    { id: 2, name: "Student Two", avatar: "S2" },
-    { id: 3, name: "Student Three", avatar: "S3" },
-    // Add more students as needed
-  ]);
+  const [unsubscribeGroups, setUnsubscribeGroups] = useState(() => {});
+  const [facultyDetails, setFacultyDetails] = useState({});
+
 
   useEffect(() => {
     if (auth.user) {
-      // Assuming your auth.user object has a uid property
       setCurrentUserId(auth.user.uid);
-      console.log(currentUserId,"is current user")
     }
   }, [auth.user]);
 
-  // useEffect(() => {
-  //   const fetchStudentDetails = async (studentIds) => {
-  //     const db = getFirestore();
-  //     const studentsCollection = collection(db, "students");
-  
-  //     const studentDetailsPromises = studentIds.map(async (studentId) => {
-  //       const studentDocRef = doc(studentsCollection, studentId);
-  
-  //       try {
-  //         const studentDocSnapshot = await getDoc(studentDocRef);
-  
-  //         if (studentDocSnapshot.exists()) {
-  //           const studentData = studentDocSnapshot.data();
-  //           console.log(`Fetched student ID: ${studentId}, Data:`, studentData);
-  //           return studentData;
-  //         } else {
-  //           console.error(`Student with ID ${studentId} not found.`);
-  //           return null;
-  //         }
-  //       } catch (error) {
-  //         console.error(`Error fetching student with ID ${studentId}:`, error);
-  //         return null;
-  //       }
-  //     });
-  
-  //     const studentDetails = await Promise.all(studentDetailsPromises);
-  //     console.log("All student details:", studentDetails);
-  //     setStudentDetails(studentDetails.filter((student) => student !== null));
-  //   };
-  
-  //   if (matchingGroups.length > 0) {
-  //     const studentIds = matchingGroups[0].students;
-  //     console.log("Fetching details for student IDs:", studentIds);
-  //     fetchStudentDetails(studentIds);
-  //   }
-  // }, [matchingGroups]);
-  
   useEffect(() => {
-    // This effect will run whenever matchingGroups changes
-    console.log("Matching Groups changed:", matchingGroups);
+    const fetchFacultyDetails = async () => {
+      try {
+        const db = getFirestore();
+        const facultiesCollection = collection(db, 'Faculties');
+        const facultyDocRef = doc(facultiesCollection, currentUserId);
+        const facultyDocSnapshot = await getDoc(facultyDocRef);
   
-    // Access students array inside matchingGroups
-    if (matchingGroups.length > 0) {
-      const studentsArray = matchingGroups[0].students;
-      console.log("Students inside matchingGroups:", studentsArray);
-      
-      // Now, you can do further processing with the studentsArray if needed
-    }
-  }, [matchingGroups]);
-  
-  useEffect(() => {
-    const fetchStudentDetails = async (studentIds) => {
-      const db = getFirestore();
-      const studentsCollection = collection(db, 'students');
-  
-      const studentDetailsPromises = studentIds.map(async (studentId) => {
-        const studentDocRef = doc(studentsCollection, studentId);
-        const studentDocSnapshot = await getDoc(studentDocRef);
-  
-        if (studentDocSnapshot.exists()) {
-          const studentData = {
-            id: studentId,
-            ...studentDocSnapshot.data(),
-          };
-          console.log(`Fetched student ID: ${studentId}, Data:`, studentData);
-          return studentData;
+        if (facultyDocSnapshot.exists()) {
+          const facultyData = facultyDocSnapshot.data();
+          setFacultyDetails(facultyData);
         } else {
-          console.error(`Student with ID ${studentId} not found.`);
-          return null;
+          console.error(`Faculty with ID ${currentUserId} not found.`);
         }
-      });
-  
-      const studentDetails = await Promise.all(studentDetailsPromises);
-      console.log("All student details:", studentDetails);
-      setStudentDetails(studentDetails.filter((student) => student !== null));
+      } catch (error) {
+        console.error('Error fetching faculty details:', error);
+      }
     };
   
-    if (matchingGroups.length > 0) {
-      const studentsArray = matchingGroups[0].students;
-      console.log("Fetching details for student IDs:", studentsArray);
-      fetchStudentDetails(studentsArray);
+    if (currentUserId) {
+      fetchFacultyDetails();
     }
-  }, [matchingGroups]);
-  
-  
+  }, [currentUserId]);
 
   useEffect(() => {
-    const db = getFirestore();
-  
     const fetchGroups = async () => {
       try {
-        // Fetch groups where guideId is equal to the currentUserId
-        const groupsSnapshot = await getDocs(
-          query(collection(db, "groups"), where("guideId", "==", currentUserId))
+        const db = getFirestore();
+        const groupsCollection = collection(db, "groups");
+  
+        // Use onSnapshot to listen for real-time updates
+        const unsubscribe = onSnapshot(
+          query(groupsCollection, where("guideId", "==", currentUserId)),
+          (snapshot) => {
+            const groupsData = snapshot.docs.map((doc) => doc.data());
+            const matchingGroups = groupsData.filter(
+              (group) => group.projectType === projectType && group.section === section
+            );
+  
+            setMatchingGroups(matchingGroups);
+            console.log(matchingGroups, 'matching grougps');
+          }
         );
   
-        const groupsData = groupsSnapshot.docs.map((doc) => doc.data());
-        console.log("Fetched groups data:", groupsData);
-  
-        // Access projectType and section from useParams
-       
-  
-        // Compare with the data from groupsData
-        const matchingGroups = groupsData.filter((group) => {
-          return group.projectType === projectType && group.section === section;
-        });
-
-
-        setMatchingGroups(matchingGroups);
-        console.log("Matching Groups:", matchingGroups);
-  
-     
+        // Save the unsubscribe function for later cleanup
+        setUnsubscribeGroups(() => unsubscribe);
       } catch (error) {
         console.error("Error fetching groups:", error);
       }
     };
   
     fetchGroups();
-  }, [currentUserId, useParams]); // Include currentUserId and useParams as dependencies
-   // Include currentUserId as a dependency
   
-  const handleAttachmentChange = (e) => {
-    setAttachment(e.target.value);
-  };
+    // Cleanup function to unsubscribe when component unmounts
+    return () => {
+      if (unsubscribeGroups) {
+        unsubscribeGroups();
+      }
+    };
+  }, [currentUserId, projectType, section]);
 
-  const handleAssignmentSubmit = () => {
-    // Handle assignment submission logic
-    // You can add your backend integration here
+  useEffect(() => {
+    const fetchStudentDetails = async (studentIds) => {
+      try {
+        const db = getFirestore();
+        const studentsCollection = collection(db, 'students');
 
-    // For demonstration, we'll update the submittedAssignments state
+        const studentDetailsPromises = studentIds.map(async (studentId) => {
+          const studentDocRef = doc(studentsCollection, studentId);
+          const studentDocSnapshot = await getDoc(studentDocRef);
+
+          if (studentDocSnapshot.exists()) {
+            const studentData = {
+              id: studentId,
+              ...studentDocSnapshot.data(),
+            };
+            return studentData;
+          } else {
+            console.error(`Student with ID ${studentId} not found.`);
+            return null;
+          }
+        });
+
+        const studentDetails = await Promise.all(studentDetailsPromises);
+        setStudentDetails(studentDetails.filter((student) => student !== null));
+      } catch (error) {
+        console.error("Error fetching student details:", error);
+      }
+    };
+
+    if (matchingGroups.length > 0) {
+      const studentsArray = matchingGroups[0].students;
+      fetchStudentDetails(studentsArray);
+    }
+  }, [matchingGroups]);
+
+ const handleWorkAssigned = async () => {
+  try {
+    const db = getFirestore();
+    const assignmentsCollection = collection(db, 'assignments');
+
     const newAssignment = {
-      student: "Student X",
-      assignment: assignmentTitle,
-      submission: "Submitted on " + new Date().toLocaleDateString(),
-      status: "Submitted",
+      
+      groupId: matchingGroups[0]?.groupId ,
+      
+      assignmentTitle,
+      assignmentDeadline,
+      submissionDate: new Date(),
+      status: 'Submitted',
+      guideId: currentUserId,
     };
+    
 
-    setSubmittedAssignments((prevAssignments) => [
-      ...prevAssignments,
-      newAssignment,
-    ]);
-    setAssignmentTitle("");
-    setAssignmentDeadline("");
+    const assignmentDocRef = await addDoc(assignmentsCollection, newAssignment);
+    setSelectedAssignment({
+      id: assignmentDocRef.id,  // Make sure to set the id here
+      ...newAssignment,
+    });
+ // Reset assignment details
+ setAssignmentTitle('');
+ setAssignmentDeadline('');
+
+ toast.success('Assignment added successfully', {
+  position: toast.POSITION.TOP_RIGHT,
+  autoClose: 1500, // Set the duration in milliseconds
+});
+    // Rest of your code...
+  } catch (error) {
+    toast.error('Error adding assignment. Please try again.', {
+      position: toast.POSITION.TOP_RIGHT,
+      autoClose: 1500,
+    });
+    console.error('Error adding assignment:', error);
+  }
+};
+
+
+  const handleCommentSubmit = async () => {
+    try {
+      console.log('groupId:', matchingGroups[0]?.groupId);
+      console.log('assignmentId:', selectedAssignment?.id);
+  
+      const db = getFirestore();
+      const commentsCollection = collection(db, 'comments');
+  
+      const newComment = {
+        groupId: matchingGroups[0]?.groupId || '',
+        assignmentId: selectedAssignment?.id || '',
+        userId: currentUserId,
+        userName: facultyDetails.fullName,
+        profile: facultyDetails.profilePic,
+        message: updateMessage,
+        timestamp: new Date(),
+      };
+  
+      await addDoc(commentsCollection, newComment);
+      setUpdateMessage('');
+      toast.success('Comment submitted successfully', {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 1500, // Set the duration in milliseconds
+      });
+      console.log('Submitting comment...');
+    } catch (error) {
+      toast.error('Error adding comment. Please try again.', {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 1500,
+      });
+      console.error('Error adding comment:', error);
+    }
   };
-
-  const handleCommentSubmit = () => {
-    // Handle comment submission logic
-    // You can add your backend integration here
-
-    // For demonstration, we'll update the comments state
-    const newComment = {
-      student: "Student Y",
-      message: updateMessage,
+  const fetchComments = async () => {
+    console.log('insdie fetch groupId:', matchingGroups[0]?.groupId);
+  
+    try {
+      const db = getFirestore();
+      const commentsCollection = collection(db, 'comments');
+      
+      // Use onSnapshot to listen for real-time updates
+      const unsubscribe = onSnapshot(
+        query(commentsCollection, where('groupId', '==', matchingGroups[0]?.groupId || '')),
+        (snapshot) => {
+          const commentsData = snapshot.docs.map((doc) => doc.data());
+          console.log('Fetched Comments:', commentsData);
+          setComments(commentsData);
+        }
+      );
+  
+      // Save the unsubscribe function for later cleanup
+      setUnsubscribeGroups(() => unsubscribe);
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+    }
+  };
+  
+  
+  useEffect(() => {
+    fetchComments();
+  }, [matchingGroups]);
+  
+  useEffect(() => {
+    const fetchPreviousAssignments = async () => {
+      try {
+        const db = getFirestore();
+        const assignmentsCollection = collection(db, 'assignments');
+    
+        // Use onSnapshot to listen for real-time updates
+        const unsubscribe = onSnapshot(
+          query(assignmentsCollection, where('groupId', '==', matchingGroups[0]?.groupId || '')),
+          (snapshot) => {
+            const assignmentsData = snapshot.docs.map((doc) => ({
+              id: doc.id,  // Make sure to set the id here
+              ...doc.data(),
+            }));
+            setSubmittedAssignments(assignmentsData);
+          }
+        );
+    
+        // Save the unsubscribe function for later cleanup
+        setUnsubscribeGroups(() => unsubscribe);
+      } catch (error) {
+        console.error('Error fetching previous assignments:', error);
+      }
     };
+    
+  
+    if (matchingGroups.length > 0) {
+      console.log('Fetching previous assignments...');
+      fetchPreviousAssignments();
+    }
+  
+    // Cleanup function to unsubscribe when component unmounts
+    return () => {
+      if (unsubscribeGroups) {
+        unsubscribeGroups();
+      }
+    };
+  }, [matchingGroups]);
+  
 
-    setComments((prevComments) => [...prevComments, newComment]);
-    setUpdateMessage("");
+  const handleDeleteAssignment = async (assignmentId) => {
+    try {
+      if (!assignmentId) {
+        console.error('Assignment ID is undefined.');
+        return;
+      }
+  
+      const db = getFirestore();
+      const assignmentsCollection = collection(db, 'assignments');
+      const assignmentDocRef = doc(assignmentsCollection, assignmentId);
+  
+      // Delete the assignment from Firestore
+      await deleteDoc(assignmentDocRef);
+  
+      // Optionally, you can also update the local state to remove the deleted assignment
+      setSubmittedAssignments((prevAssignments) =>
+        prevAssignments.filter((assignment) => assignment.id !== assignmentId)
+      );
+      toast.success('Deleted successfully', {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 1500, // Set the duration in milliseconds
+      });
+      console.log(`Assignment with ID ${assignmentId} deleted successfully.`);
+    } catch (error) {
+      toast.error('Something went wrong.', {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 1500,
+      });
+      console.error('Error deleting assignment:', error);
+    }
   };
-
-  const handleAssignmentClick = (assignment) => {
-    // Handle assignment click logic (e.g., show details, navigate to assignment page)
-    setSelectedAssignment(assignment);
-  };
+  
+  
 
   return (
     <div>
@@ -283,7 +389,7 @@ const ClassroomComponent = () => {
             <Button
               variant="contained"
               color="primary"
-              onClick={handleAssignmentSubmit}
+              onClick={handleWorkAssigned}
             >
              Post
             </Button>
@@ -291,36 +397,54 @@ const ClassroomComponent = () => {
 
           {/* Separate Paper for Submitted Assignments Section */}
           {submittedAssignments.length > 0 &&
-            submittedAssignments.map((assignment, index) => (
-              <Paper
-                key={index}
-                elevation={3}
-                style={{ padding: "20px", marginTop: "20px" }}
-              >
-                
-                <List>
-                  <ListItem
-                    button
-                   
-                  >
-                    <ListItemAvatar>
-                      <Avatar>
-                        <AttachFile />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={`${assignment.student} posted a new work ${assignment.assignment}`}
-                      secondary={
-                        <>
-                          {assignment.submission} ({assignment.status})
-                        </>
-                      }
-                    />
-                  </ListItem>
-                 
-                </List>
-              </Paper>
-            ))}
+        submittedAssignments.map((assignment, index) => (
+          <Paper
+            key={index}
+            elevation={3}
+            style={{ padding: "20px", marginTop: "20px", position: "relative" }}
+          >
+            {/* Delete icon in the top right corner */}
+            <IconButton
+  aria-label="delete assignment"
+  style={{
+    position: "absolute",
+    top: 0,
+    right: 0,
+    color: "red",
+  }}
+  onClick={() => handleDeleteAssignment(assignment.id)}
+>
+  <DeleteIcon />
+</IconButton>
+
+            <List>
+              <ListItem button>
+                <ListItemAvatar>
+                  <Avatar src={facultyDetails.profilePic}  style={{ width: '60px', height: '60px' }} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={
+                    <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '20px' }}>
+                      {assignment.assignmentTitle}
+                    </Typography>
+                  }
+                  secondary={
+                    <React.Fragment>
+                      <Typography component="span" variant="body2" color="textPrimary">
+                        {facultyDetails.fullName}
+                      </Typography>
+                      <br />
+                      <Typography component="span" variant="body2" color="textSecondary">
+                        {`Deadline: ${assignment.assignmentDeadline}`}
+                      </Typography>
+                    </React.Fragment>
+                  }
+                />
+              </ListItem>
+            </List>
+          </Paper>
+        ))}
+
                <Grid item xs={12}>
       <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
         <Typography variant="h5" gutterBottom>
@@ -347,10 +471,11 @@ const ClassroomComponent = () => {
             <React.Fragment key={index}>
               <ListItem>
                 <ListItemAvatar>
-                  <Avatar>{comment.student.charAt(0)}</Avatar>
+                <Avatar   src={comment.profile} >{comment.userName && comment.userName.charAt(0)}</Avatar>
+
                 </ListItemAvatar>
                 <ListItemText
-                  primary={comment.student}
+                  primary={comment.userName}
                   secondary={comment.message}
                 />
               </ListItem>
@@ -400,25 +525,7 @@ const ClassroomComponent = () => {
 </Grid>
 
 
-        {/* Assignment Details Section */}
-        {selectedAssignment && (
-          <Grid item xs={12}>
-            <Paper elevation={3} style={{ padding: "20px", marginTop: "20px" }}>
-              <Typography variant="h5" gutterBottom>
-                Assignment Details - {selectedAssignment.assignment}
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                Student: {selectedAssignment.student}
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                Submission: {selectedAssignment.submission}
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                Status: {selectedAssignment.status}
-              </Typography>
-            </Paper>
-          </Grid>
-        )}
+ 
       </Grid>
     </div>
   );

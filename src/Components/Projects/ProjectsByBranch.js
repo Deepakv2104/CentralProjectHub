@@ -89,8 +89,35 @@ const ProjectTable = () => {
   const [filterYear, setFilterYear] = useState(""); // New state for year filter
   const [filterSection, setFilterSection] = useState("");
   const [loading, setLoading] = useState(true);
+const [sections,setSections]  = useState('')
 
+useEffect(() => {
+  const fetchSections = async () => {
+    const db = getFirestore();
 
+    // Check if filterYear has a value before constructing the document reference
+    if (filterYear) {
+      const branchDocRef = doc(db, "btech", branchName, "year", filterYear);
+
+      try {
+        const branchDocSnapshot = await getDoc(branchDocRef);
+        const branchData = branchDocSnapshot.data();
+        const sectionsArray = branchData?.sections || [];
+
+        console.log("Fetched Sections:", sectionsArray);
+
+        setSections(sectionsArray);
+      } catch (error) {
+        console.error("Error fetching branch details:", error);
+      }
+    }
+  };
+
+  // Fetch sections for the selected branch
+  if (branchName) {
+    fetchSections();
+  }
+}, [branchName, filterYear]);
 
 
 
@@ -114,17 +141,17 @@ const ProjectTable = () => {
         // Check if studentId is available before fetching rollNo
         if (projectData.userId) {
           const studentDetails = await fetchStudentDetails(projectData.userId);
-          console.log(studentDetails);
+          // console.log(studentDetails);
           // Set rollNo and year in project data
           projectData.rollNo = studentDetails.rollNo;
           projectData.year = studentDetails.year;
           projectData.section = studentDetails.section;
-          console.log(
-            "Section for project",
-            projectData.id,
-            ":",
-            projectData.section
-          );
+          // console.log(
+          //   "Section for project",
+          //   projectData.id,
+          //   ":",
+          //   projectData.section
+          // );
         } else {
           console.log("No student id provided for project:", projectData.id);
           projectData.rollNo = "N/A";
@@ -276,10 +303,11 @@ const ProjectTable = () => {
           <MenuItem disabled value="">
             Select Section
           </MenuItem>
-          <MenuItem value="A">A</MenuItem>
-          <MenuItem value="B">B</MenuItem>
-          <MenuItem value="C">C</MenuItem>
-          {/* Add more sections as needed */}
+          {Array.isArray(sections) && sections.map((section) => (
+            <MenuItem key={section} value={section}>
+              {section}
+            </MenuItem>
+          ))}
         </Select>
         <IconButton
           color="primary"

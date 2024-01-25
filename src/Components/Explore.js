@@ -14,15 +14,15 @@ const Explore = () => {
         <Carousel
           title="Explore branches"
           data={branches}
-          cardWidth="30%" // Use a relative unit like percentage for responsiveness
+          // cardWidth="30%" // Use a relative unit like percentage for responsiveness
           visibleCards={4}
         />
       </div>
       <div className="c1">
         <Carousel
-          title="Explore Computer Science Projects"
+          title="Explore Domian wise Projects"
           data={computerScienceDomains}
-          cardWidth="30%" // Use a relative unit like percentage for responsiveness
+          // cardWidth="30%" // Use a relative unit like percentage for responsiveness
           visibleCards={4}
         />
       </div>

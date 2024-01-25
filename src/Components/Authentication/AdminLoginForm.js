@@ -55,7 +55,7 @@ const AdminLoginForm = () => {
       console.log('User UID:', user.uid);
 
       // Delay the navigation slightly to ensure the toast is displayed
-      navigate('/admin-dashboard');
+      navigate('/admin-dashboard/explore');
   
       // Display a success toast
       toast.success('Login successful!', { position: 'top-right', autoClose: 1200 });

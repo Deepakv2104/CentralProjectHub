@@ -44,7 +44,7 @@ const ProfileCarousel = () => {
       
       <div className="card-carousel" ref={carouselRef}>
         {profiles.map((item, index) => (
-          <div key={index} className="card1" onClick={() => handleCardClick(item)}>
+          <div key={index} className="card1" >
             <TopContributorsCard
               name={item.name}
               imageUrl={item.imageUrl}
