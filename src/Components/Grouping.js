@@ -36,6 +36,8 @@ import {
 addDoc
 } from "firebase/firestore";
 import { InputLabel } from "@material-ui/core";
+import CsvUploadToFirebase from "./csvUpload";
+import JsonUploadToFirebase from "./csvUpload";
 const useStyles = makeStyles({
   tableContainer: {
     display: "flex",
@@ -733,6 +735,7 @@ useEffect(() => {
       >
         Upload
       </Button>
+      {/* <JsonUploadToFirebase/> */}
       </div>
     </div>
   );
