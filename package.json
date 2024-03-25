@@ -23,7 +23,7 @@
     "firebase": "^10.7.2",
     "framer-motion": "^10.16.16",
     "papaparse": "^5.4.1",
-    "react": "^17.0.2",
+    "react": "^18.2.0",
     "react-countup": "^6.5.0",
     "react-dom": "^18.2.0",
     "react-elastic-carousel": "^0.11.5",
