@@ -3,7 +3,7 @@ import { Card, CardContent, Typography, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { useParams, Navigate, useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
-import DeleteIcon from "@material-ui/icons/Delete";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { styled } from "@mui/system";
 import { getFirestore, collection, onSnapshot } from "firebase/firestore";
 import EditProject from "./EditProject";

@@ -3,7 +3,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
 } from 'firebase/auth';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material';
 import { doc, setDoc, getDocs, collection } from 'firebase/firestore';
 import { firestore } from '../../firebase/firebase';
 import {  Select, InputLabel, MenuItem, Typography, Input } from '@mui/material';

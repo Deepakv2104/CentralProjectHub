@@ -7,7 +7,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { TextField } from "@mui/material"; // Import TextField from Material-UI
 import "../../Styles/Navbar.css";
 import { Search } from "@mui/icons-material";
-import { IconButton } from "@material-ui/core";
+import { IconButton } from "@mui/material";
 
 const Navbar = ({ onMenuToggle }) => {
   const { user, signOut } = useAuth();

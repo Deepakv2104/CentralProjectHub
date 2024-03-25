@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { IconButton, Typography } from "@material-ui/core";
+import { IconButton, Typography } from "@mui/material";
 import { getFirestore, collection, query, where, onSnapshot } from "firebase/firestore";
 import { toast } from "react-toastify";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";

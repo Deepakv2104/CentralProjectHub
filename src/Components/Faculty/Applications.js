@@ -1,7 +1,7 @@
 // ApplicationsList.js
 import React from 'react';
 import { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@mui/material';
 import {
   Card,
   CardContent,
@@ -17,9 +17,9 @@ import {
   TextField,
   TableHead,
   Input
-} from '@material-ui/core';
-import RefreshIcon from '@material-ui/icons/Refresh';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+} from '@mui/material';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const useStyles = makeStyles((theme) => ({
   root: {

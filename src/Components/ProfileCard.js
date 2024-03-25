@@ -1,7 +1,7 @@
 // ProfileCard.js
 import React from 'react';
 import '../Styles/ProfileCard.css'
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 
 const ProfileCard = ({ name, imageUrl, backgroundColor, quote,rollNo }) => {
   return (

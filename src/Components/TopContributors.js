@@ -1,7 +1,7 @@
 
 import React from 'react';
 import '../Styles/TopContributorsCard.css'
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 
 const TopContributorsCard = ({ name, imageUrl, backgroundColor, quote,rollNo }) => {
   return (

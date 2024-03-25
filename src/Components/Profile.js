@@ -28,7 +28,7 @@ import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { auth, firestore } from "../firebase/firebase";
 import EditProfile from "./EditProfile";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { IconButton } from "@material-ui/core";
+import { IconButton } from "@mui/material";
 const Profile = () => {
   const { studentId } = useParams();
   const location = useLocation();

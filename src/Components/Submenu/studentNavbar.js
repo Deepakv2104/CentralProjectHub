@@ -13,13 +13,13 @@ import {
   Typography,
   InputBase,
   Badge,
-} from "@material-ui/core";
+} from "@mui/material";
 import { useNavigate, Outlet } from "react-router-dom";
-import MenuIcon from "@material-ui/icons/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
 import ProfileAvatar from "../ProfileAvatar";
 import ExploreIcon from "@mui/icons-material/Explore";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import SearchIcon from "@material-ui/icons/Search";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import SearchIcon from "@mui/icons-material/Search";
 import SchoolIcon from "@mui/icons-material/School";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import AttachEmailIcon from "@mui/icons-material/AttachEmail";

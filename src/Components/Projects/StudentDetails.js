@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import ProjectCount from "../ProjectCount";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { styled } from "@mui/system";
-import { IconButton } from "@material-ui/core";
+import { IconButton } from "@mui/material";
 import intToRoman from "../RomanNo";
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
   "&:hover": {

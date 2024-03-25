@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { IconButton, Typography } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
+import { IconButton, Typography } from "@mui/material";
+// import DeleteIcon from "@material-ui/icons/Delete";
 import ProjectSubmission from "./AddProject";
 import "../../Styles/MyProjects.css";
 import { useAuth } from "../Authentication/auth-context";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+// import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
   getFirestore,
   collection,

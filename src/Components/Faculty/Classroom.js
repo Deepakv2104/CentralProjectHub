@@ -21,7 +21,7 @@ import {
   Badge,
   Tooltip,
 } from "@mui/material";
-import { Send, AttachFile, InsertLink, VideoLibrary,YouTube} from '@material-ui/icons';
+import { Send, AttachFile, InsertLink, VideoLibrary,YouTube} from '@mui/icons-material';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import {
   getFirestore,

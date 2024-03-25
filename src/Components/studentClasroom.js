@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Paper, Grid, Typography, List, ListItem, ListItemAvatar, Avatar, ListItemText, Divider, TextField, Button, InputAdornment, IconButton } from "@mui/material";
-import { Send } from '@material-ui/icons';
+import { Send } from '@mui/icons-material';
 import { getFirestore, collection, doc, getDoc, query, onSnapshot, addDoc, where } from "firebase/firestore";
 import { useAuth } from "./Authentication/auth-context";
 import { toast } from 'react-toastify';
