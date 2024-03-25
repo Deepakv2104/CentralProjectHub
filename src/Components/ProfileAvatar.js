@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { Avatar, IconButton, CircularProgress } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { doc, getDoc, setDoc } from 'firebase/firestore';

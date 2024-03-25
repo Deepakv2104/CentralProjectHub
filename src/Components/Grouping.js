@@ -22,7 +22,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Search from "@mui/icons-material/Search";
 import { arrayUnion } from 'firebase/firestore';
 
-import { makeStyles } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import Loop from "@mui/icons-material/Loop";
 import {
   getFirestore,

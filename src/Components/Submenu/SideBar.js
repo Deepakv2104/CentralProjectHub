@@ -17,7 +17,7 @@ import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 // import ReceiptIcon from "@mui/icons-material/Receipt";
 // import SettingsIcon from "@mui/icons-material/Settings";
 // import MenuIcon from "@mui/icons-material/Menu";
-import { makeStyles } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { useNavigate } from "react-router-dom";
 import "../../Styles/SideBar.css";
 import { Person } from "@mui/icons-material";

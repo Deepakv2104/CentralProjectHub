@@ -23,7 +23,7 @@ import {
   doc,
   getDocs,
 } from "firebase/firestore";
-import { makeStyles } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { TableSortLabel } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
