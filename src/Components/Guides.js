@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Typography } from '@mui/material';
 import ProfileCard from './ProfileCard';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
-import { makeStyles } from "@mui/styles";
+import { makeStyles } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import CircularProgress from "@mui/material/CircularProgress";
 

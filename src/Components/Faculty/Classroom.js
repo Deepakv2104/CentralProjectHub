@@ -37,7 +37,7 @@ import {
 addDoc
 } from "firebase/firestore";
 import { useAuth } from "../Authentication/auth-context";
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const ClassroomComponent = () => {
   const auth = useAuth();

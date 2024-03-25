@@ -22,7 +22,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Search from "@mui/icons-material/Search";
 import { arrayUnion } from 'firebase/firestore';
 
-import { makeStyles } from "@mui/styles";
+import { makeStyles } from "@mui/material";
 import Loop from "@mui/icons-material/Loop";
 import {
   getFirestore,
@@ -35,7 +35,7 @@ import {
   updateDoc,
 addDoc
 } from "firebase/firestore";
-import { InputLabel } from "@material-ui/core";
+import { InputLabel } from "@mui/material";
 import CsvUploadToFirebase from "./csvUpload";
 import JsonUploadToFirebase from "./csvUpload";
 const useStyles = makeStyles({

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Download } from '@mui/icons-material';
-import { IconButton } from '@material-ui/core';
+import { IconButton } from '@mui/material';
 import { styled } from "@mui/system";
 
 
