@@ -220,9 +220,10 @@ const NavBar = ({ children }) => {
       <List>
         {/* Iterate over real-time notifications received from FCM */}
         {notifications.map((notification, index) => (
-          <ListItem key={index}>
-            <ListItemText primary={notification.title} />
-          </ListItem>
+        <ListItem key={index}>
+        <ListItemText primary={notification.title.toLowerCase()} />
+      </ListItem>
+      
         ))}
       </List>
     </div>
@@ -313,13 +314,14 @@ const NavBar = ({ children }) => {
               style={{
                 display: "flex",
                 alignItems: "center",
-                color: "inherit",
+                color: "black",
               }}
             >
               <ListItemIcon>
                 <ExploreIcon />
               </ListItemIcon>
-              <ListItemText primary="Explore" />
+              <ListItemText primary="Explore" style={{ textTransform: 'none' }} />
+
             </Button>
           </ListItem>
           <ListItem>
@@ -334,7 +336,7 @@ const NavBar = ({ children }) => {
               <ListItemIcon>
                 <SchoolIcon />
               </ListItemIcon>
-              <ListItemText primary="Apprentice" />
+              <ListItemText primary="Apprentice" style={{ textTransform: 'none' }} />
             </Button>
           </ListItem>
           <ListItem>
@@ -349,7 +351,7 @@ const NavBar = ({ children }) => {
               <ListItemIcon>
                 <GroupAddIcon />
               </ListItemIcon>
-              <ListItemText primary="Group" />
+              <ListItemText primary="Group" style={{ textTransform: 'none' }} />
             </Button>
           </ListItem>
           <ListItem>
@@ -364,7 +366,7 @@ const NavBar = ({ children }) => {
               <ListItemIcon>
                 <AttachEmailIcon />
               </ListItemIcon>
-              <ListItemText primary="Requests" />
+              <ListItemText primary="Requests" style={{ textTransform: 'none' }} />
             </Button>
           </ListItem>
           <ListItem>
@@ -379,7 +381,7 @@ const NavBar = ({ children }) => {
               <ListItemIcon>
                 <ManageAccountsIcon />
               </ListItemIcon>
-              <ListItemText primary="Profile" />
+              <ListItemText primary="Profile" style={{ textTransform: 'none' }} />
             </Button>
           </ListItem>
           <ListItem>
@@ -394,7 +396,7 @@ const NavBar = ({ children }) => {
               <ListItemIcon>
                 <ExitToAppIcon />
               </ListItemIcon>
-              <ListItemText primary="Logout" />
+              <ListItemText primary="Logout" style={{ textTransform: 'none', color:'black' }} />
             </Button>
           </ListItem>
         </List>

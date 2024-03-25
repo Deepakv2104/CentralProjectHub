@@ -29,6 +29,7 @@ import { useAuth } from "../Authentication/auth-context";
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "../../firebase/firebase";
 import { ToastContainer, toast } from "react-toastify";
+import WorkspacesIcon from '@mui/icons-material/Workspaces';
 
 const drawerWidth = 250;
 
@@ -257,7 +258,7 @@ const StudentNavbar = ({ children }) => {
               <ListItemIcon>
                 <ExploreIcon />
               </ListItemIcon>
-              <ListItemText primary="Explore" />
+              <ListItemText primary="Explore" style={{ textTransform: 'none' }} />
             </Button>
           </ListItem>
           <ListItem>
@@ -272,7 +273,7 @@ const StudentNavbar = ({ children }) => {
               <ListItemIcon>
                 <SchoolIcon />
               </ListItemIcon>
-              <ListItemText primary="Add Project" />
+              <ListItemText primary="Add Project" style={{ textTransform: 'none' }}/>
             </Button>
           </ListItem>
           <ListItem>
@@ -287,7 +288,22 @@ const StudentNavbar = ({ children }) => {
               <ListItemIcon>
                 <GroupAddIcon />
               </ListItemIcon>
-              <ListItemText primary="Guide" />
+              <ListItemText primary="Guide" style={{ textTransform: 'none' }}/>
+            </Button>
+          </ListItem>
+           <ListItem>
+            <Button
+              onClick={() => navigate("/student-dashboard/workspace")}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                color: "inherit",
+              }}
+            >
+              <ListItemIcon>
+                <WorkspacesIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Workspace" style={{ textTransform: 'none' }} />
             </Button>
           </ListItem>
           <ListItem>
@@ -302,7 +318,7 @@ const StudentNavbar = ({ children }) => {
               <ListItemIcon>
                 <AttachEmailIcon />
               </ListItemIcon>
-              <ListItemText primary="Profile" />
+              <ListItemText primary="Profile"  style={{ textTransform: 'none' }}/>
             </Button>
           </ListItem>
         
@@ -318,7 +334,7 @@ const StudentNavbar = ({ children }) => {
               <ListItemIcon>
                 <ExitToAppIcon />
               </ListItemIcon>
-              <ListItemText primary="Logout" />
+              <ListItemText primary="Logout" style={{ textTransform: 'none' }}/>
             </Button>
           </ListItem>
         </List>

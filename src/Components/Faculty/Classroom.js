@@ -90,6 +90,7 @@ const ClassroomComponent = () => {
       try {
         const db = getFirestore();
         const groupsCollection = collection(db, "groups");
+        console.log(projectType)
   
         // Use onSnapshot to listen for real-time updates
         const unsubscribe = onSnapshot(

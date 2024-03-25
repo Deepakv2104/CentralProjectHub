@@ -80,11 +80,11 @@ const AdminLoginForm = () => {
     <form>
       <div>
         <label htmlFor="email">Email</label>
-        <input type="email" id="email" value={email} onChange={handleEmailChange} />
+        <input style={{  width: '90%'}}type="email" id="email" value={email} onChange={handleEmailChange} />
       </div>
       <div>
         <label htmlFor="password">Password</label>
-        <input type="password" id="password" value={password} onChange={handlePasswordChange} />
+        <input style={{  width: '90%'}} type="password" id="password" value={password} onChange={handlePasswordChange} />
       </div>
       <button
         type="button"

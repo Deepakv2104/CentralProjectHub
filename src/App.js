@@ -28,6 +28,7 @@ import ApplicationsList from "./Components/Faculty/Applications.js";
 import { getToken } from "firebase/messaging";
 import { messaging } from "./firebase/firebase.js";
 import ProjectByDomain from "./Components/ProjectByDomain.js";
+import StudentComponent from "./Components/studentClasroom.js";
 
 const theme = createTheme();
 
@@ -94,6 +95,11 @@ const App = () => {
                 path="/student-dashboard/guide"
                 element={<FacultiesGrid />}
               />
+              
+              <Route
+                  path="/student-dashboard/workspace"
+                  element={<StudentComponent />}
+                />
               <Route
                 path="/student-dashboard/guide/:FacultyId"
                 element={<GuideProfile />}

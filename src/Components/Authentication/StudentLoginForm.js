@@ -82,19 +82,39 @@ const StudentLoginForm = () => {
 
   return (
     <form>
-      <div>
+      <div  style={{
+        
+          width: '100%',
+          padding: '10px',
+          color: 'white',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          fontSize: '16px',
+          marginTop: '10px',
+        }}>
         <label htmlFor="email">Email</label>
-        <input type="email" id="email" value={email} onChange={handleEmailChange} />
+        <input style={{  width: '90%',}}type="email" id="email" value={email} onChange={handleEmailChange} />
       </div>
-      <div>
+      <div  style={{
+        
+          width: '100%',
+          padding: '10px',
+          color: 'white',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          fontSize: '16px',
+          marginTop: '10px',
+        }}>
         <label htmlFor="password">Password</label>
-        <input type="password" id="password" value={password} onChange={handlePasswordChange} />
+        <input style={{  width: '90%'}} type="password" id="password" value={password} onChange={handlePasswordChange} />
       </div>
       <button
         type="button"
         onClick={handleLogin}
         style={{
-          backgroundColor: '#28a745',
+       
           width: '100%',
           padding: '10px',
           color: 'white',
